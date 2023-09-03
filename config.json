@@ -1,0 +1,7 @@
+{
+  "host": "localhost",
+  "user": "postgres",
+  "password": "necula04",
+  "database": "PartsManager_DataBase",
+  "port": "5432"
+}
