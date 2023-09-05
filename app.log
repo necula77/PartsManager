@@ -1,0 +1,24 @@
+31-Aug-2023 18:04:49 - INFO - login_sequence.py - 48 - Utilizatorul necula77 s-a logat cu succes.
+04-Sep-2023 21:07:01 - ERROR - login_sequence.py - 54 - Eroare la autentificare: schema "pgcrypto" does not exist
+LINE 2: ...         WHERE username = 'necula' AND password = pgcrypto.c...
+                                                             ^
+
+04-Sep-2023 21:08:32 - ERROR - login_sequence.py - 54 - Eroare la autentificare: function crypt(unknown, character varying) does not exist
+LINE 2: ...         WHERE username = 'necula' AND password = crypt('joh...
+                                                             ^
+HINT:  No function matches the given name and argument types. You might need to add explicit type casts.
+
+04-Sep-2023 21:15:17 - ERROR - login_sequence.py - 55 - Eroare la autentificare: function crypt(unknown, character varying) does not exist
+LINE 3: ...         WHERE username = 'necula' AND password = crypt('joh...
+                                                             ^
+HINT:  No function matches the given name and argument types. You might need to add explicit type casts.
+
+04-Sep-2023 21:15:35 - ERROR - login_sequence.py - 55 - Eroare la autentificare: schema "pgcrypto" does not exist
+LINE 3: ...         WHERE username = 'necula' AND password = pgcrypto.c...
+                                                             ^
+
+05-Sep-2023 18:56:34 - ERROR - login_sequence.py - 54 - Eroare la autentificare: function crypt(unknown, character varying) does not exist
+LINE 2: ...       WHERE username = 'necula77' AND password = crypt('123...
+                                                             ^
+HINT:  No function matches the given name and argument types. You might need to add explicit type casts.
+

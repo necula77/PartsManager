@@ -13,7 +13,7 @@ logging.basicConfig(level=logging.INFO,
                         format="%(asctime)s - %(levelname)s - %(filename)s - %(lineno)s - %(message)s",
                         datefmt="%d-%b-%Y %H:%M:%S",
                         handlers=[
-                            logging.FileHandler("app_log.txt"),  # apare intr un fisier
+                            logging.FileHandler("app.log"),  # apare intr un fisier
                             logging.StreamHandler()  # apare in consola ca un print
                         ]
                         )
@@ -83,16 +83,7 @@ class PartsManager():
                 table.grid(row=i, column=j)
 
 
-
 class AutoDetails():
-
-    def retrieve_btn_cmd(self):
-
-        vin = self.vin_entry.get()
-        license = self.license_plate_entry.get()
-        data = DB_actions.Registered_Cars.recieve_from_db(self, vin=vin, license_plate=license)
-
-        return data
 
     def __init__(self):
 
@@ -107,7 +98,9 @@ class AutoDetails():
         self.send_button = tk.Button(self.root, text="Send", font=("Arial", "14"), command=self.send_btn_cmd)
         self.send_button.grid(row=7, column=4, pady=20)
 
-        self.retrieve_button = tk.Button(self.root, text="Retrieve", font=("Arial", "14"), command=self.retrieve_btn_cmd)
+        self.retrieve_button = tk.Button(self.root, text="Retrieve data",
+                                         font=("Arial", "14"),
+                                         command=self.retrieve_btn_cmd)
         self.retrieve_button.grid(row=7, column=3, pady=20)
         self.retrieve_button.bind('<Return>', self.send_btn_cmd)
 
@@ -129,7 +122,7 @@ class AutoDetails():
                                             width=15,
                                             font=("Arial", "14"))
 
-        self.data = self.retrieve_btn_cmd()
+        # self.data = self.retrieve_btn_cmd()
 
         self.engine_label = tk.Label(self.root, text="Engine", font=("Arial", "14"))
         self.engine_entry = tk.Entry(self.root, width=15, font=("Arial", "14"))
@@ -197,13 +190,38 @@ class AutoDetails():
         # functie care trimite datele auto spre baza de date in cazul in care nu sunt deja in ea
 
         vin = self.vin_entry.get()
+        plate = self.license_plate_entry.get()
+
 
     def retrieve_btn_cmd(self):
 
+        data_dict = {
+            "VIN": "",
+            "License Plate": "",
+            "Manufacturer": "",
+            "Model": "",
+            "Year": "",
+            "Engine": "",
+            "KW": "",
+            "CMC": "",
+            "Fuel_Type": "",
+            "KM": ""
+        }
         vin = self.vin_entry.get()
         license = self.license_plate_entry.get()
         data = DB_actions.Registered_Cars.recieve_from_db(self, vin=vin, license_plate=license)
+        self.vin_entry.insert(0, data['VIN'])
+        self.license_plate_entry.insert(0, data['License Plate'])
+        self.engine_entry.insert(0, data['Engine'])
+        self.km_entry.insert(0, data['KM'])
+        self.kw_entry.insert(0, data['KW'])
+        self.cc_entry.insert(0, data['CMC'])
+        self.make_entry.insert(0, data['Manufacturer'])
+        self.model_entry.insert(0, data['Model'])
+        self.year_entry.insert(0, data['Year'])
+        self.fuel_type_entry.insert(0, data['Fuel_Type'])
 
+        print(data)
         return data
 
 
@@ -265,5 +283,5 @@ class LoginWindow():
 
 
 if __name__ == "__main__":
-    LoginWindow()
-    # PartsManager()
+    # LoginWindow()
+    PartsManager()
