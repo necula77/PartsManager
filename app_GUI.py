@@ -6,7 +6,6 @@ import psycopg2 as ps
 import logging
 import DB_actions
 
-
 LOGGER = logging.getLogger(__name__)
 
 logging.basicConfig(level=logging.INFO,
@@ -91,7 +90,7 @@ class AutoDetails():
         self.root = tk.Tk()
         self.root.title("Auto Details")
         self.root.geometry("530x320+550+270")
-        self.root.wm_attributes("-topmost", True)
+        # self.root.wm_attributes("-topmost", True)
 
         # Buttons
 
@@ -182,16 +181,43 @@ class AutoDetails():
 
         self.root.mainloop()
 
-    def insert_into_entry(self, entry_name, values):
-        self.entry_name.insert(values=values)
-
 
     def send_btn_cmd(self):
         # functie care trimite datele auto spre baza de date in cazul in care nu sunt deja in ea
 
         vin = self.vin_entry.get()
         plate = self.license_plate_entry.get()
+        engine = self.engine_entry.get()
+        km = self.km_entry.get()
+        kw = self.kw_entry.get()
+        cc = self.cc_entry.get()
+        make = self.make_entry.get()
+        model = self.model_entry.get()
+        year = self.year_entry.get()
+        fuel_type = self.fuel_type_entry.get()
 
+        sql_query = f"""UPDATE "Auto_Details"."REGISTERED_CARS"
+                        SET "Engine" = '{self.engine_entry.get()}',
+                            "KW" = '{self.kw_entry.get()}',
+                            "CMC" = '{self.cc_entry.get()}',
+                            "Fuel_Type" = '{self.fuel_type_entry.get()}',
+                            "KM" = '{self.km_entry.get()}'
+                        WHERE "VIN" = '{self.vin_entry.get()}';"""
+
+        # sql_query = f"""insert into "Auto_Details"."REGISTERED_CARS"
+        #                  ("VIN", "License Plate", "Manufacturer", "Model", "Year",
+        #                  "Engine", "KW", "CMC", "Fuel_Type", "KM")
+        #                  values ('{self.vin_entry.get()}', '{self.license_plate_entry.get()}',
+        #                  '{self.make_entry.get()}', '{self.model_entry.get()}', '{self.year_entry.get()}',
+        #                  '{self.engine_entry.get()}', '{self.kw_entry.get()}', '{self.cc_entry.get()}',
+        #                  '{self.fuel_type_entry.get()}', '{self.km_entry.get()}');"""
+
+        status = DB_actions.insert_in_db(config=config, sql_query=sql_query,
+                                         logged_user='x', license_plate=self.license_plate_entry.get(),
+                                         vin=self.vin_entry.get())
+
+        if status is True:
+            messagebox.showinfo(title="Message", message="Datele au fost introduse cu succes.")
 
     def retrieve_btn_cmd(self):
 
@@ -209,7 +235,21 @@ class AutoDetails():
         }
         vin = self.vin_entry.get()
         license = self.license_plate_entry.get()
-        data = DB_actions.Registered_Cars.recieve_from_db(self, vin=vin, license_plate=license)
+        data = DB_actions.recieve_from_db(vin=vin, license_plate=license)
+
+        # deleting data from entrys
+        self.vin_entry.delete(0, 'end')
+        self.license_plate_entry.delete(0, 'end')
+        self.engine_entry.delete(0, 'end')
+        self.km_entry.delete(0, 'end')
+        self.kw_entry.delete(0, 'end')
+        self.cc_entry.delete(0, 'end')
+        self.make_entry.delete(0, 'end')
+        self.model_entry.delete(0, 'end')
+        self.year_entry.delete(0, 'end')
+        self.fuel_type_entry.delete(0, 'end')
+
+        # now inserting data into entrys
         self.vin_entry.insert(0, data['VIN'])
         self.license_plate_entry.insert(0, data['License Plate'])
         self.engine_entry.insert(0, data['Engine'])
