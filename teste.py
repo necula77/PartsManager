@@ -25,6 +25,10 @@ class AutoPartsManagerApp:
         self.quit_button.pack(pady=10)
 
 if __name__ == "__main__":
-    root = tk.Tk()
-    app = AutoPartsManagerApp(root)
-    root.mainloop()
+    # root = tk.Tk()
+    # app = AutoPartsManagerApp(root)
+    # root.mainloop()
+    try:
+        somecode()  # raises NameError
+    except Exception as e:
+        print('Error! Code: {c}, Message, {m}'.format(c=type(e).__name__, m=str(e)))

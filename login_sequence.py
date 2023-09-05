@@ -34,7 +34,7 @@ def login_func(username, password, config):
         with ps.connect(**config) as conn:
             with conn.cursor() as cursor:
                 sql_query = f"""SELECT first_name, last_name, authorization_level FROM "Authorization"."LOGIN_INFO"
-                                WHERE username = '{username}' AND password = crypt('{password}', password);"""
+                                WHERE username = '{username}' AND password = '{password}';"""
 
                 cursor.execute(sql_query)
                 data = cursor.fetchone()
