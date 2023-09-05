@@ -10,7 +10,7 @@ logging.basicConfig(level=logging.INFO,
                         format="%(asctime)s - %(levelname)s - %(filename)s - %(lineno)s - %(message)s",
                         datefmt="%d-%b-%Y %H:%M:%S",
                         handlers=[
-                            logging.FileHandler("app_log.txt"),  # apare intr un fisier
+                            logging.FileHandler("app.log"),  # apare intr un fisier
                             logging.StreamHandler()  # apare in consola ca un print
                         ]
                         )
@@ -34,7 +34,7 @@ def login_func(username, password, config):
         with ps.connect(**config) as conn:
             with conn.cursor() as cursor:
                 sql_query = f"""SELECT first_name, last_name, authorization_level FROM "Authorization"."LOGIN_INFO"
-                                WHERE username = '{username}' AND password = pgcrypto.crypt('{password}', password);"""
+                                WHERE username = '{username}' AND password = crypt('{password}', password);"""
 
                 cursor.execute(sql_query)
                 data = cursor.fetchone()

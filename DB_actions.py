@@ -3,7 +3,7 @@ import logging
 import psycopg2 as ps
 from psycopg2 import errors
 import requests
-
+from psycopg2.extras import RealDictCursor
 
 LOGGER = logging.getLogger(__name__)
 
@@ -11,7 +11,7 @@ logging.basicConfig(level=logging.INFO,
                         format="%(asctime)s - %(levelname)s - %(filename)s - %(lineno)s - %(message)s",
                         datefmt="%d-%b-%Y %H:%M:%S",
                         handlers=[
-                            logging.FileHandler("app_log.txt"),  # apare intr un fisier
+                            logging.FileHandler("app.log"),  # apare intr un fisier
                             logging.StreamHandler()  # apare in consola ca un print
                         ]
                         )
@@ -29,7 +29,7 @@ class Registered_Cars():
     def recieve_from_db(self, vin="", license_plate=""):
         try:
             with ps.connect(**self.config) as conn:
-                with conn.cursor() as cursor:
+                with conn.cursor(cursor_factory=RealDictCursor) as cursor:
                     sql_query = f"""select "VIN", "License Plate", "Manufacturer", "Model", "Year",
                                    "Engine", "KW", "CMC", "Fuel_Type", "KM"
                                    from "Auto_Details"."REGISTERED_CARS"
