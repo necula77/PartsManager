@@ -6,3 +6,5 @@ LINE 7:                         WHER "VIN" = '';
 06-Sep-2023 17:40:39 - INFO - DB_actions.py - 47 - User: x a accesat baza de date 
                          pentru a modifica datele masinii: 
                          B33CCC, TMKCJ55GDFG545651.
+06-Sep-2023 19:47:54 - INFO - DB_actions.py - 46 - User: x a accesat baza de date pentru a modifica datele masinii: B33CCC, TMKCJ55GDFG545651.
+06-Sep-2023 20:07:17 - INFO - login_sequence.py - 49 - Utilizatorul necula77 s-a logat cu succes.

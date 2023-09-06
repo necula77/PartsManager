@@ -43,7 +43,7 @@ def insert_in_db(sql_query, logged_user, license_plate, vin, config=CONFIG):
             with conn.cursor() as cursor:
                 cursor.execute(sql_query)
                 conn.commit()
-        logging.info(f"""User: {logged_user} a accesat baza de date pentru a modifica datele masinii: {license_plate}, {vin}.""")
+        logging.info(f"""User {logged_user} a accesat baza de date pentru a modifica datele masinii: {license_plate}, {vin}.""")
 
         return True
 

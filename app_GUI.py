@@ -19,6 +19,24 @@ logging.basicConfig(level=logging.INFO,
                         )
 
 
+def center_window(win):
+    """
+    centers a tkinter window
+    :param win: the main window or Toplevel window to center
+    """
+    win.update_idletasks()
+    width = win.winfo_width()
+    frm_width = win.winfo_rootx() - win.winfo_x()
+    win_width = width + 2 * frm_width
+    height = win.winfo_height()
+    titlebar_height = win.winfo_rooty() - win.winfo_y()
+    win_height = height + titlebar_height + frm_width
+    x = win.winfo_screenwidth() // 2 - win_width // 2
+    y = win.winfo_screenheight() // 2 - win_height // 2
+    win.geometry('{}x{}+{}+{}'.format(width, height, x, y))
+    win.deiconify()
+
+
 def validate_input(P, max_char: int):
     if int(len(P)) <= int(max_char):
         return True
@@ -29,11 +47,13 @@ def validate_input(P, max_char: int):
 class PartsManager():
 
     def __init__(self):
+
         self.win = tk.Tk()
         self.win.title("PartsManager")
 
         self.win.geometry("745x500")
         # CENTRARE PE MIJLOC A APLICATIEI
+        center_window(self.win)
 
         # pt full screen
         # self.width = self.win.winfo_screenwidth()
@@ -80,6 +100,7 @@ class PartsManager():
         # self._entry.grid(row=, column=, pady=5)
 
         self.win.mainloop()
+        self.status = False
 
     def create_table(self, row, column, start_row=0):
 
@@ -102,7 +123,7 @@ class AutoDetails:
         self.root.title("Auto Details")
         self.root.geometry("535x320+550+270")
         # self.root.wm_attributes("-topmost", True)
-
+        center_window(self.root)
         # Buttons
 
         self.send_button = tk.Button(self.root, text="Send", font=("Arial", "14"), command=self.send_btn_cmd)
@@ -136,7 +157,6 @@ class AutoDetails:
 
         self.engine_label = tk.Label(self.root, text="Engine", font=("Arial", "14"))
         self.engine_entry = tk.Entry(self.root, width=15, font=("Arial", "14"))
-
 
         self.kw_label = tk.Label(self.root, text="KW", font=("Arial", "14"))
         self.kw_entry = tk.Entry(self.root, width=15, font=("Arial", "14"))
@@ -281,6 +301,7 @@ class LoginWindow:
         self.root = tk.Tk()
         self.root.title("LOGIN")
         self.root.geometry("400x300+550+270")
+        center_window(self.root)
 
         self.frame = tk.Frame(self.root)
         self.frame.columnconfigure(0, weight=1)
