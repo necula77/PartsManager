@@ -2,3 +2,7 @@
 LINE 7:                         WHER "VIN" = '';
                                 ^
 
+
+06-Sep-2023 17:40:39 - INFO - DB_actions.py - 47 - User: x a accesat baza de date 
+                         pentru a modifica datele masinii: 
+                         B33CCC, TMKCJ55GDFG545651.
