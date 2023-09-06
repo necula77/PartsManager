@@ -5,6 +5,7 @@ from login_sequence import config
 import psycopg2 as ps
 import logging
 import DB_actions
+import webbrowser
 
 LOGGER = logging.getLogger(__name__)
 
@@ -31,7 +32,7 @@ class PartsManager():
         self.win = tk.Tk()
         self.win.title("PartsManager")
 
-        self.win.geometry("720x600")
+        self.win.geometry("745x500")
         # CENTRARE PE MIJLOC A APLICATIEI
 
         # pt full screen
@@ -41,7 +42,7 @@ class PartsManager():
 
         self.frame = tk.Frame(self.win)
         self.frame.columnconfigure(0, weight=1)
-        self.frame.columnconfigure(1, weight=1)
+        self.frame.columnconfigure(1, weight=2)
         self.frame.columnconfigure(2, weight=1)
         self.frame.columnconfigure(3, weight=1)
         self.frame.columnconfigure(4, weight=1)
@@ -55,13 +56,18 @@ class PartsManager():
 
         # Table
 
-        self.create_table(5, 4)
+        self.create_table(5, 6, start_row=3)
 
         # Buttons
 
         self.auto_details_button = tk.Button(self.win, text="Auto Details", font=("Arial", "14"), command=AutoDetails)
-        self.auto_details_button.grid(row=7, column=2, pady=20)
+        self.auto_details_button.grid(row=0, column=0, pady=20)
         self.auto_details_button.configure(borderwidth=1, font='Calibri 10 bold')
+
+        self.open_tec_doc_button = tk.Button(self.win, text="TecDoc", font=("Arial", "14"), command=self.open_tec_doc)
+        self.open_tec_doc_button.grid(row=0, column=1, pady=20)
+        self.open_tec_doc_button.configure(borderwidth=1, font='Calibri 10 bold')
+
 
         # widgets declaration
 
@@ -75,21 +81,26 @@ class PartsManager():
 
         self.win.mainloop()
 
-    def create_table(self, row, column):
+    def create_table(self, row, column, start_row=0):
+
         for i in range(row):
+
             for j in range(column):
                 table = tk.Entry(self.win, width=10, fg="gray", font=('Arial', 16, 'bold'))
-                table.grid(row=i, column=j)
+                table.grid(row=i + start_row, column=j)
+
+    def open_tec_doc(self):
+        webbrowser.open('https://web.tecalliance.net/tecdocsw/ro/login')
 
 
-class AutoDetails():
+class AutoDetails:
 
     def __init__(self):
 
         self.config = config
         self.root = tk.Tk()
         self.root.title("Auto Details")
-        self.root.geometry("530x320+550+270")
+        self.root.geometry("535x320+550+270")
         # self.root.wm_attributes("-topmost", True)
 
         # Buttons
@@ -261,11 +272,10 @@ class AutoDetails():
         self.year_entry.insert(0, data['Year'])
         self.fuel_type_entry.insert(0, data['Fuel_Type'])
 
-        print(data)
         return data
 
 
-class LoginWindow():
+class LoginWindow:
 
     def __init__(self):
         self.root = tk.Tk()
