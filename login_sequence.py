@@ -44,11 +44,11 @@ def login_func(username, password, config):
                     status = False
 
                     print("Username-ul sau parola sunt gresite. Va rugam sa incercati din nou.")
-                    return data, status
+                    return data, status, username
                 else:
                     logging.info(f"Utilizatorul {username} s-a logat cu succes.")
                     status = True
-                    return data, status
+                    return data, status, username
 
     except Exception as e:
         logging.error(f"Eroare la autentificare: {e}")

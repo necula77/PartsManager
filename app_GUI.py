@@ -1,4 +1,5 @@
 import tkinter as tk
+from tkinter import *
 from tkinter import messagebox
 import login_sequence as ls
 from login_sequence import config
@@ -6,6 +7,10 @@ import psycopg2 as ps
 import logging
 import DB_actions
 import webbrowser
+import cv2
+from PIL import Image, ImageTk
+
+USERNAME = ""
 
 LOGGER = logging.getLogger(__name__)
 
@@ -54,6 +59,12 @@ class PartsManager():
         self.win.geometry("745x500")
         # CENTRARE PE MIJLOC A APLICATIEI
         center_window(self.win)
+
+        # CA SA PORNEASCA IN FULL SCREEN
+        # self.win.state("zoomed")
+
+        # NU POATE FI MINIMIZATA SAU MAXIMIZATA APLICATIA
+        self.win.resizable(False, False)
 
         # pt full screen
         # self.width = self.win.winfo_screenwidth()
@@ -123,6 +134,7 @@ class AutoDetails:
         self.root.title("Auto Details")
         self.root.geometry("535x320+550+270")
         # self.root.wm_attributes("-topmost", True)
+
         center_window(self.root)
         # Buttons
 
@@ -244,7 +256,7 @@ class AutoDetails:
         #                  '{self.fuel_type_entry.get()}', '{self.km_entry.get()}');"""
 
         status = DB_actions.insert_in_db(config=config, sql_query=sql_query,
-                                         logged_user='x', license_plate=self.license_plate_entry.get(),
+                                         logged_user=USERNAME, license_plate=self.license_plate_entry.get(),
                                          vin=self.vin_entry.get())
 
         if status is True:
@@ -303,6 +315,15 @@ class LoginWindow:
         self.root.geometry("400x300+550+270")
         center_window(self.root)
 
+        self.root.resizable(False, False)
+
+        self.img = (Image.open("D:\\PartsManager\\Photos\\PORSCHE_911_GT2RS.png"))
+        self.resized_image = self.img.resize((400,300))
+        self.bg = ImageTk.PhotoImage(self.resized_image)
+        # self.bg = PhotoImage(file="D:\\PartsManager\\Photos\\PORSCHE_911_GT2RS.png")
+        self.image_label = tk.Label(self.root, image=self.bg)
+        self.image_label.place(x=0, y=0)
+
         self.frame = tk.Frame(self.root)
         self.frame.columnconfigure(0, weight=1)
         self.frame.columnconfigure(1, weight=1)
@@ -339,11 +360,12 @@ class LoginWindow:
         self.root.mainloop()
 
     def login_btn_cmd(self):
+        global USERNAME
 
         # authorization_level = ls.login_func(username=self.username_entry.get(), password=self.password_entry.get(), config=config)[0]
         # self.status = authorization_level[1]
         if self.username_entry.get() and self.password_entry.get():
-            self.data, self.status = ls.login_func(username=self.username_entry.get(), password=self.password_entry.get(), config=config)
+            self.data, self.status, USERNAME = ls.login_func(username=self.username_entry.get(), password=self.password_entry.get(), config=config)
             if self.status is False:
                 messagebox.showerror(title="Fail Authenticator", message="Username-ul sau parola sunt gresite.")
             else:
@@ -354,5 +376,5 @@ class LoginWindow:
 
 
 if __name__ == "__main__":
-    # LoginWindow()
-    PartsManager()
+    LoginWindow()
+    # PartsManager()
