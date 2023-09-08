@@ -78,6 +78,8 @@ class PartsManager():
         self.frame.columnconfigure(2, weight=1)
         self.frame.columnconfigure(3, weight=1)
         self.frame.columnconfigure(4, weight=1)
+        self.frame.columnconfigure(5, weight=1)
+        self.frame.columnconfigure(6, weight=1)
 
         self.frame.rowconfigure(0, weight=1)
         self.frame.rowconfigure(1, weight=1)
@@ -88,43 +90,75 @@ class PartsManager():
 
         # Table
 
-        self.create_table(5, 6, start_row=3)
+        self.table_row = self.create_table(1, 5, start_row=3)
 
         # Buttons
 
         self.auto_details_button = tk.Button(self.win, text="Auto Details", font=("Arial", "14"), command=AutoDetails)
         self.auto_details_button.grid(row=0, column=0, pady=20)
-        self.auto_details_button.configure(borderwidth=1, font='Calibri 10 bold')
+        self.auto_details_button.configure(borderwidth=1, font='Calibri 12 bold')
 
         self.open_tec_doc_button = tk.Button(self.win, text="TecDoc", font=("Arial", "14"), command=self.open_tec_doc)
         self.open_tec_doc_button.grid(row=0, column=1, pady=20)
-        self.open_tec_doc_button.configure(borderwidth=1, font='Calibri 10 bold')
+        self.open_tec_doc_button.configure(borderwidth=1, font='Calibri 12 bold')
 
+        self.recieve_shipment_button = tk.Button(self.win, text="Recieve Shipment", font=("Arial", "14"))
+        self.recieve_shipment_button.grid(row=0, column=2, pady=20)
+        self.recieve_shipment_button.configure(borderwidth=1, font='Calibri 12 bold')
+
+        self.add_part_to_db_button = tk.Button(self.win, text="Add Part", font=("Arial", "14"))
+        self.add_part_to_db_button.grid(row=0, column=3, pady=20)
+        self.add_part_to_db_button.configure(borderwidth=1, font='Calibri 12 bold')
+
+        self.add_table_row_button = tk.Button(self.win, text="Add row", font=("Arial", "14"), command=lambda: self.add_table_row(self.table_row))
+        # label to position the button better
+        self.empty_label = tk.Label(self.win, text="      ", font=("Source Code Pro", "14"))
+        self.empty_label.grid(row=3, column=5, pady=10)
+        # label to position the button better
+        self.add_table_row_button.grid(row=3, column=6, pady=40, sticky="e")
+        self.add_table_row_button.configure(borderwidth=1, font='Calibri 12 bold')
 
         # widgets declaration
 
-        self._label = tk.Label(self.win, text="", font=("Arial", "14"))
+        self.part_name_label = tk.Label(self.win, text="Part Name", font=("Source Code Pro", "14"))
+        self.part_number_label = tk.Label(self.win, text="Part Number", font=("Source Code Pro", "14"))
+        self.stock_label = tk.Label(self.win, text="Stock", font=("Source Code Pro", "14"))
+        self.price_label = tk.Label(self.win, text="Price", font=("Source Code Pro", "14"))
+        self.location_in_warehouse_label = tk.Label(self.win, text="Location", font=("Source Code Pro", "14"))
+
         self._entry = tk.Entry(self.win, width=15, font=("Arial", "14"))
 
         # widgets rendering
 
-        # self._label.grid(row=, column=, pady=10)
+        self.part_name_label.grid(row=2, column=0, pady=10)
+        self.part_number_label.grid(row=2, column=1, pady=10)
+        self.stock_label.grid(row=2, column=2, pady=10)
+        self.price_label.grid(row=2, column=3, pady=10)
+        self.location_in_warehouse_label.grid(row=2, column=4, pady=10)
         # self._entry.grid(row=, column=, pady=5)
 
         self.win.mainloop()
         self.status = False
 
     def create_table(self, row, column, start_row=0):
+        last_row = 0
 
         for i in range(row):
-
+            last_row += 1
             for j in range(column):
                 table = tk.Entry(self.win, width=10, fg="gray", font=('Arial', 16, 'bold'))
                 table.grid(row=i + start_row, column=j)
 
+        return last_row
+
+    def add_table_row(self, actual_row):
+
+        for j in range(5):
+            table = tk.Entry(self.win, width=10, fg="gray", font=('Arial', 16, 'bold'))
+            table.grid(row=actual_row, column=j)
+
     def open_tec_doc(self):
         webbrowser.open('https://web.tecalliance.net/tecdocsw/ro/login')
-
 
 
 class AutoDetails():
@@ -229,7 +263,7 @@ class AutoDetails():
         self.root.mainloop()
 
     def save_data_to_json(self):
-        # Collect data from the entry widgets
+
         data = {
             "VIN": self.vin_entry.get(),
             "License Plate": self.license_plate_entry.get(),
@@ -243,22 +277,19 @@ class AutoDetails():
             "Fuel Type": self.fuel_type_entry.get()
         }
 
-        # Specify the file path where you want to save the JSON data
         file_path = "AutoDetails.json"
 
-        # Write the data to the JSON file
         with open(file_path, 'w') as json_file:
             json.dump(data, json_file, indent=4)
 
     def fill_entries_from_json(self):
-        # Specify the file path where the JSON data is located
+
         file_path = "AutoDetails.json"
 
         try:
             with open(file_path, 'r') as json_file:
                 data = json.load(json_file)
 
-            # Update entry widgets with data from the JSON file
             self.vin_entry.delete(0, 'end')
             self.vin_entry.insert(0, data.get("VIN", ""))
 
@@ -290,8 +321,7 @@ class AutoDetails():
             self.fuel_type_entry.insert(0, data.get("Fuel Type", ""))
 
         except FileNotFoundError:
-            # Handle the case when the JSON file doesn't exist
-            pass
+            messagebox.showerror(title="Error", message="Fisierul Json nu a fost gasit!")
 
     def send_btn_cmd(self):
         # functie care trimite datele auto spre baza de date in cazul in care nu sunt deja in ea
@@ -325,6 +355,10 @@ class AutoDetails():
             messagebox.showinfo(title="Message", message="Datele au fost introduse cu succes.")
 
     def retrieve_btn_cmd(self):
+
+        json_data = {}
+        with open("AutoDetails.json", 'w') as json_file:
+            json.dump(json_data, json_file, indent=4)
 
         data_dict = {
             "VIN": "",
@@ -442,8 +476,8 @@ class LoginWindow:
 
 
 if __name__ == "__main__":
-    LoginWindow()
-    # PartsManager()
+    # LoginWindow()
+    PartsManager()
 
     # deletes everything from the json file
     data = {}
