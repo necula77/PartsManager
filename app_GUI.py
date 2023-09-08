@@ -9,6 +9,7 @@ import DB_actions
 import webbrowser
 import cv2
 from PIL import Image, ImageTk
+import json
 
 USERNAME = ""
 
@@ -125,7 +126,8 @@ class PartsManager():
         webbrowser.open('https://web.tecalliance.net/tecdocsw/ro/login')
 
 
-class AutoDetails:
+
+class AutoDetails():
 
     def __init__(self):
 
@@ -222,8 +224,74 @@ class AutoDetails:
         self.fuel_type_label.grid(row=6, column=3, pady=10)
         self.fuel_type_entry.grid(row=6, column=4, pady=5)
 
+        self.fill_entries_from_json()
+
         self.root.mainloop()
 
+    def save_data_to_json(self):
+        # Collect data from the entry widgets
+        data = {
+            "VIN": self.vin_entry.get(),
+            "License Plate": self.license_plate_entry.get(),
+            "Engine": self.engine_entry.get(),
+            "KM": self.km_entry.get(),
+            "KW": self.kw_entry.get(),
+            "CC": self.cc_entry.get(),
+            "Make": self.make_entry.get(),
+            "Model": self.model_entry.get(),
+            "Year": self.year_entry.get(),
+            "Fuel Type": self.fuel_type_entry.get()
+        }
+
+        # Specify the file path where you want to save the JSON data
+        file_path = "AutoDetails.json"
+
+        # Write the data to the JSON file
+        with open(file_path, 'w') as json_file:
+            json.dump(data, json_file, indent=4)
+
+    def fill_entries_from_json(self):
+        # Specify the file path where the JSON data is located
+        file_path = "AutoDetails.json"
+
+        try:
+            with open(file_path, 'r') as json_file:
+                data = json.load(json_file)
+
+            # Update entry widgets with data from the JSON file
+            self.vin_entry.delete(0, 'end')
+            self.vin_entry.insert(0, data.get("VIN", ""))
+
+            self.license_plate_entry.delete(0, 'end')
+            self.license_plate_entry.insert(0, data.get("License Plate", ""))
+
+            self.engine_entry.delete(0, 'end')
+            self.engine_entry.insert(0, data.get("Engine", ""))
+
+            self.km_entry.delete(0, 'end')
+            self.km_entry.insert(0, data.get("KM", ""))
+
+            self.kw_entry.delete(0, 'end')
+            self.kw_entry.insert(0, data.get("KW", ""))
+
+            self.cc_entry.delete(0, 'end')
+            self.cc_entry.insert(0, data.get("CC", ""))
+
+            self.make_entry.delete(0, 'end')
+            self.make_entry.insert(0, data.get("Make", ""))
+
+            self.model_entry.delete(0, 'end')
+            self.model_entry.insert(0, data.get("Model", ""))
+
+            self.year_entry.delete(0, 'end')
+            self.year_entry.insert(0, data.get("Year", ""))
+
+            self.fuel_type_entry.delete(0, 'end')
+            self.fuel_type_entry.insert(0, data.get("Fuel Type", ""))
+
+        except FileNotFoundError:
+            # Handle the case when the JSON file doesn't exist
+            pass
 
     def send_btn_cmd(self):
         # functie care trimite datele auto spre baza de date in cazul in care nu sunt deja in ea
@@ -247,17 +315,11 @@ class AutoDetails:
                             "KM" = '{self.km_entry.get()}'
                         WHERE "VIN" = '{self.vin_entry.get()}';"""
 
-        # sql_query = f"""insert into "Auto_Details"."REGISTERED_CARS"
-        #                  ("VIN", "License Plate", "Manufacturer", "Model", "Year",
-        #                  "Engine", "KW", "CMC", "Fuel_Type", "KM")
-        #                  values ('{self.vin_entry.get()}', '{self.license_plate_entry.get()}',
-        #                  '{self.make_entry.get()}', '{self.model_entry.get()}', '{self.year_entry.get()}',
-        #                  '{self.engine_entry.get()}', '{self.kw_entry.get()}', '{self.cc_entry.get()}',
-        #                  '{self.fuel_type_entry.get()}', '{self.km_entry.get()}');"""
-
         status = DB_actions.insert_in_db(config=config, sql_query=sql_query,
                                          logged_user=USERNAME, license_plate=self.license_plate_entry.get(),
                                          vin=self.vin_entry.get())
+
+        self.save_data_to_json()
 
         if status is True:
             messagebox.showinfo(title="Message", message="Datele au fost introduse cu succes.")
@@ -304,6 +366,8 @@ class AutoDetails:
         self.year_entry.insert(0, data['Year'])
         self.fuel_type_entry.insert(0, data['Fuel_Type'])
 
+        self.save_data_to_json()
+
         return data
 
 
@@ -347,8 +411,10 @@ class LoginWindow:
         self.hello_label = tk.Label(self.root, text="Bine ati venit!", font=("Italic", "16"))
         self.username_label = tk.Label(self.root, text="Username:", font=("Arial", "14"))
         self.username_entry = tk.Entry(self.root, width=15, font=("Arial", "14"))
+        self.username_entry.bind('<Return>', self.login_btn_cmd)
         self.password_label = tk.Label(self.root, text="Password:", font=("Arial", "14"))
         self.password_entry = tk.Entry(self.root, width=15, font=("Arial", "14"), show="*")
+        self.password_entry.bind('<Return>', self.login_btn_cmd)
 
         # widgets rendering
         self.hello_label.grid(row=0, column=1, padx=90)
@@ -359,7 +425,7 @@ class LoginWindow:
 
         self.root.mainloop()
 
-    def login_btn_cmd(self):
+    def login_btn_cmd(self, event=None):
         global USERNAME
 
         # authorization_level = ls.login_func(username=self.username_entry.get(), password=self.password_entry.get(), config=config)[0]
@@ -378,3 +444,8 @@ class LoginWindow:
 if __name__ == "__main__":
     LoginWindow()
     # PartsManager()
+
+    # deletes everything from the json file
+    data = {}
+    with open("AutoDetails.json", 'w') as json_file:
+        json.dump(data, json_file, indent=4)
