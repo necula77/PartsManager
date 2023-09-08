@@ -3,23 +3,29 @@ LINE 7:                         WHER "VIN" = '';
                                 ^
 
 
-06-Sep-2023 17:40:39 - INFO - DB_actions.py - 47 - User: x a accesat baza de date 
-                         pentru a modifica datele masinii: 
-                         B33CCC, TMKCJ55GDFG545651.
-06-Sep-2023 19:47:54 - INFO - DB_actions.py - 46 - User: x a accesat baza de date pentru a modifica datele masinii: B33CCC, TMKCJ55GDFG545651.
-06-Sep-2023 20:07:17 - INFO - login_sequence.py - 49 - Utilizatorul necula77 s-a logat cu succes.
-06-Sep-2023 20:50:33 - INFO - login_sequence.py - 49 - Utilizatorul necula77 s-a logat cu succes.
-07-Sep-2023 18:42:58 - INFO - login_sequence.py - 49 - Utilizatorul necula77 s-a logat cu succes.
-07-Sep-2023 18:43:27 - INFO - DB_actions.py - 46 - User x a accesat baza de date pentru a modifica datele masinii: B33CCC, TMKCJ55GDFG545651.
-07-Sep-2023 18:46:39 - INFO - login_sequence.py - 49 - Utilizatorul necula77 s-a logat cu succes.
-07-Sep-2023 18:47:20 - INFO - login_sequence.py - 49 - Utilizatorul necula77 s-a logat cu succes.
-07-Sep-2023 18:56:10 - INFO - login_sequence.py - 49 - Utilizatorul necula77 s-a logat cu succes.
-07-Sep-2023 19:18:01 - INFO - login_sequence.py - 49 - Utilizatorul necula77 s-a logat cu succes.
-07-Sep-2023 19:22:13 - INFO - login_sequence.py - 49 - Utilizatorul necula77 s-a logat cu succes.
-07-Sep-2023 19:22:20 - INFO - DB_actions.py - 46 - User  a accesat baza de date pentru a modifica datele masinii: B33CCC, TMKCJ55GDFG545651.
-07-Sep-2023 19:22:52 - INFO - login_sequence.py - 49 - Utilizatorul necula77 s-a logat cu succes.
-07-Sep-2023 19:24:25 - INFO - login_sequence.py - 49 - Utilizatorul necula77 s-a logat cu succes.
-07-Sep-2023 19:25:41 - INFO - login_sequence.py - 49 - Utilizatorul necula77 s-a logat cu succes.
-07-Sep-2023 19:25:47 - INFO - DB_actions.py - 46 - User necula77 a accesat baza de date pentru a modifica datele masinii: B33CCC, TMKCJ55GDFG545651.
-07-Sep-2023 19:27:13 - INFO - login_sequence.py - 49 - Utilizatorul necula77 s-a logat cu succes.
-07-Sep-2023 19:29:45 - INFO - login_sequence.py - 49 - Utilizatorul alex s-a logat cu succes.
+07-Sep-2023 20:51:40 - INFO - login_sequence.py - 49 - Utilizatorul necula77 s-a logat cu succes.
+07-Sep-2023 20:51:59 - INFO - DB_actions.py - 46 - User necula77 a accesat baza de date pentru a modifica datele masinii: B33CCC, TMKCJ55GDFG545651.
+07-Sep-2023 20:52:17 - INFO - DB_actions.py - 46 - User necula77 a accesat baza de date pentru a modifica datele masinii: B33CCC, TMKCJ55GDFG545651.
+07-Sep-2023 20:52:47 - INFO - login_sequence.py - 49 - Utilizatorul necula77 s-a logat cu succes.
+07-Sep-2023 20:53:05 - ERROR - DB_actions.py - 56 - Eroare la introducerea datelor in baza de date: invalid input syntax for type integer: ""
+LINE 3:                             "KW" = '',
+                                           ^
+
+08-Sep-2023 17:20:21 - INFO - login_sequence.py - 49 - Utilizatorul necula77 s-a logat cu succes.
+08-Sep-2023 17:23:26 - INFO - login_sequence.py - 49 - Utilizatorul necula77 s-a logat cu succes.
+08-Sep-2023 17:23:39 - INFO - login_sequence.py - 49 - Utilizatorul necula77 s-a logat cu succes.
+08-Sep-2023 17:24:08 - INFO - login_sequence.py - 49 - Utilizatorul necula77 s-a logat cu succes.
+08-Sep-2023 17:26:46 - INFO - login_sequence.py - 49 - Utilizatorul necula77 s-a logat cu succes.
+08-Sep-2023 17:35:32 - INFO - login_sequence.py - 49 - Utilizatorul necula77 s-a logat cu succes.
+08-Sep-2023 17:36:01 - INFO - login_sequence.py - 49 - Utilizatorul necula77 s-a logat cu succes.
+08-Sep-2023 17:37:49 - INFO - login_sequence.py - 49 - Utilizatorul necula77 s-a logat cu succes.
+08-Sep-2023 17:39:37 - INFO - login_sequence.py - 49 - Utilizatorul necula77 s-a logat cu succes.
+08-Sep-2023 17:41:07 - INFO - login_sequence.py - 49 - Utilizatorul necula77 s-a logat cu succes.
+08-Sep-2023 17:43:43 - INFO - login_sequence.py - 49 - Utilizatorul necula77 s-a logat cu succes.
+08-Sep-2023 17:46:46 - INFO - login_sequence.py - 49 - Utilizatorul necula77 s-a logat cu succes.
+08-Sep-2023 17:48:36 - INFO - login_sequence.py - 49 - Utilizatorul necula77 s-a logat cu succes.
+08-Sep-2023 17:50:26 - INFO - login_sequence.py - 49 - Utilizatorul necula77 s-a logat cu succes.
+08-Sep-2023 17:51:07 - INFO - login_sequence.py - 49 - Utilizatorul necula77 s-a logat cu succes.
+08-Sep-2023 17:51:27 - INFO - login_sequence.py - 49 - Utilizatorul necula77 s-a logat cu succes.
+08-Sep-2023 17:52:49 - INFO - login_sequence.py - 49 - Utilizatorul necula77 s-a logat cu succes.
+08-Sep-2023 17:56:20 - INFO - login_sequence.py - 49 - Utilizatorul necula77 s-a logat cu succes.
