@@ -86,7 +86,36 @@ def register_part(part_number, part_name, stock, location, price, logged_user, c
                                    values ('{part_number}', '{part_name}', '{stock}', '{location}', {price});""")
                 conn.commit()
         logging.info(
-            f"""User {logged_user} a accesat baza de date pentru a adauga {part_name}, {part_number} in baza de date.""")
+            f"""User {logged_user} a accesat baza de date pentru a adauga {part_name}, {part_number}.""")
+
+        return True
+
+    except pserrors.SyntaxError as e:
+
+        logging.error(f"Eroare la introducerea in datelor in baza de date. Query-ul a fost scris gresit. \n {e}")
+
+    except pserrors.UniqueViolation as e:
+
+        logging.error(f"Eroare la introducerea datelor in baza de date, piesa introduse este deja inregistrata. \n {e}")
+
+    except Exception as e:
+        psycopg2.errors.lookup(e)
+        logging.error(f"Eroare la introducerea datelor in baza de date: {e}")
+        exit()
+
+
+def recieve_shipment(part_number, stock, logged_user, config=CONFIG):
+    try:
+
+        with ps.connect(**config) as conn:
+            with conn.cursor() as cursor:
+                cursor.execute(f"""UPDATE "Parts"."Warehouse"
+                                   SET "Stock" = {stock}
+                                   WHERE "Part_number" = '{part_number}';""")
+                conn.commit()
+        logging.info(
+            f"""User {logged_user} a accesat baza de date
+                pentru a modifica stockul din depozit pentru {part_number}, acesta fiind acum {stock}.""")
 
         return True
 
