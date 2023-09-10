@@ -43,3 +43,21 @@ LINE 3:                             "KW" = '',
 08-Sep-2023 18:44:30 - INFO - login_sequence.py - 49 - Utilizatorul necula77 s-a logat cu succes.
 08-Sep-2023 18:47:57 - INFO - login_sequence.py - 49 - Utilizatorul necula77 s-a logat cu succes.
 08-Sep-2023 18:48:35 - INFO - login_sequence.py - 49 - Utilizatorul necula77 s-a logat cu succes.
+10-Sep-2023 17:07:20 - INFO - DB_actions.py - 87 - User necula77 a accesat baza de date pentru a .
+10-Sep-2023 17:08:11 - ERROR - DB_actions.py - 98 - Eroare la introducerea datelor in baza de date: duplicate key value violates unique constraint "Warehouse_pkey"
+DETAIL:  Key ("Part_number")=(0102C-13256) already exists.
+
+10-Sep-2023 17:09:19 - ERROR - DB_actions.py - 100 - Eroare la introducerea datelor in baza de date: duplicate key value violates unique constraint "Warehouse_pkey"
+DETAIL:  Key ("Part_number")=(0102C-13256) already exists.
+
+10-Sep-2023 17:13:08 - ERROR - DB_actions.py - 99 - Eroare la introducerea datelor in baza de date, piesa introduse este deja inregistrata. 
+ duplicate key value violates unique constraint "Warehouse_pkey"
+DETAIL:  Key ("Part_number")=(0102C-13256) already exists.
+
+10-Sep-2023 17:13:23 - ERROR - DB_actions.py - 99 - Eroare la introducerea datelor in baza de date, piesa introduse este deja inregistrata. 
+ duplicate key value violates unique constraint "Warehouse_pkey"
+DETAIL:  Key ("Part_number")=(0102C-13256) already exists.
+
+10-Sep-2023 17:19:14 - INFO - DB_actions.py - 88 - User  a accesat baza de date pentru a adauga Volanta, 0123V-12314 in baza de date.
+10-Sep-2023 17:20:27 - INFO - DB_actions.py - 88 - User  a accesat baza de date pentru a adauga Volanta, 0123V-12314 in baza de date.
+10-Sep-2023 17:22:55 - INFO - DB_actions.py - 88 - User  a accesat baza de date pentru a adauga Volanta, 0123V-12314 in baza de date.
