@@ -61,3 +61,15 @@ DETAIL:  Key ("Part_number")=(0102C-13256) already exists.
 10-Sep-2023 17:19:14 - INFO - DB_actions.py - 88 - User  a accesat baza de date pentru a adauga Volanta, 0123V-12314 in baza de date.
 10-Sep-2023 17:20:27 - INFO - DB_actions.py - 88 - User  a accesat baza de date pentru a adauga Volanta, 0123V-12314 in baza de date.
 10-Sep-2023 17:22:55 - INFO - DB_actions.py - 88 - User  a accesat baza de date pentru a adauga Volanta, 0123V-12314 in baza de date.
+10-Sep-2023 18:50:18 - ERROR - DB_actions.py - 124 - Eroare la introducerea in datelor in baza de date. Query-ul a fost scris gresit. 
+ syntax error at or near "'Stock'"
+LINE 2:                                    SET 'Stock' = '4'
+                                               ^
+
+10-Sep-2023 18:50:50 - ERROR - DB_actions.py - 124 - Eroare la introducerea in datelor in baza de date. Query-ul a fost scris gresit. 
+ syntax error at or near "'Stock'"
+LINE 2:                                    SET 'Stock' = 4
+                                               ^
+
+10-Sep-2023 18:52:31 - INFO - DB_actions.py - 116 - User  a accesat baza de date
+                pentru a modifica stockul din depozit pentru 0123V-12314, acesta fiind acum 6.

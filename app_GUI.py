@@ -50,7 +50,7 @@ def validate_input(P, max_char: int):
         return False
 
 
-class PartsManager():
+class PartsManager:
 
     def __init__(self):
 
@@ -102,7 +102,7 @@ class PartsManager():
         self.open_tec_doc_button.grid(row=0, column=1, pady=20)
         self.open_tec_doc_button.configure(borderwidth=1, font='Calibri 12 bold')
 
-        self.recieve_shipment_button = tk.Button(self.win, text="Recieve Shipment", font=("Arial", "14"))
+        self.recieve_shipment_button = tk.Button(self.win, text="Recieve Shipment", font=("Arial", "14"), command=RecieveShipment)
         self.recieve_shipment_button.grid(row=0, column=2, pady=20)
         self.recieve_shipment_button.configure(borderwidth=1, font='Calibri 12 bold')
 
@@ -169,6 +169,62 @@ class PartsManager():
 
     def open_tec_doc(self):
         webbrowser.open('https://web.tecalliance.net/tecdocsw/ro/login')
+
+
+class RecieveShipment:
+
+    def __init__(self):
+        self.root = tk.Tk()
+        self.root.title("Recieve Shipment")
+        self.root.geometry("280x180")
+        center_window(self.root)
+
+        # Buttons
+
+        self.recieve_button = tk.Button(self.root, text="Recieve", font=("Arial", "14"), command=self.recieve_btn_cmd)
+        self.recieve_button.grid(row=3, column=2, pady=20)
+
+        self.clear_button = tk.Button(self.root, text="Clear", font=("Arial", "14"), command=self.clear_btn_cmd)
+        self.clear_button.grid(row=3, column=1, pady=20)
+
+        # Widgets declaration
+
+        self.part_number_label = tk.Label(self.root, text="Part number", font=("Arial", "14"))
+        self.part_number_entry = tk.Entry(self.root, width=15, font=("Arial", "14"))
+
+        self.stock_label = tk.Label(self.root, text="Stock", font=("Arial", "14"))
+        self.stock_entry = tk.Entry(self.root, width=15, font=("Arial", "14"))
+
+        # Widgets rendering
+
+        self.part_number_label.grid(row=1, column=1, pady=10)
+        self.part_number_entry.grid(row=1, column=2, pady=5)
+
+        self.stock_label.grid(row=2, column=1, pady=10)
+        self.stock_entry.grid(row=2, column=2, pady=5)
+
+        self.root.mainloop()
+
+    def recieve_btn_cmd(self):
+
+        part_number = self.part_number_entry.get()
+        stock = self.stock_entry.get()
+
+        status = DB_actions.recieve_shipment(part_number=part_number,
+                                             stock=stock,
+                                             logged_user=USERNAME)
+
+        if status is True:
+            return messagebox.showinfo(title="Message",
+                                       message=f"Stock-ul pentru piesa {part_number} a fost modificat cu succes."),\
+                   self.root.destroy()
+        else:
+            return messagebox.showerror(title="Error",
+                                        message=f"Stock-ul nu poate fi modificat, va rugam sa verificati datele introduse.")
+
+    def clear_btn_cmd(self):
+        self.part_number_entry.delete(0, 'end')
+        self.stock_entry.delete(0, 'end')
 
 
 class ManageParts:
