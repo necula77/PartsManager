@@ -31,6 +31,7 @@ def login_func(username, password, config):
     # status = None
 
     try:
+
         with ps.connect(**config) as conn:
             with conn.cursor() as cursor:
                 sql_query = f"""SELECT first_name, last_name, authorization_level FROM "Authorization"."LOGIN_INFO"
@@ -87,5 +88,5 @@ config = get_config("config.json")
 # # data = login_sequence(username, password, config)
 # # print(data)
 #
-# signup_func(username, password, "JOHN", "DOE", "Piesar", "Mediu", config)
+# signup_func("alex", "necula04", "JOHN", "DOE", "Piesar", "Mediu", config)
 

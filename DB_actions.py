@@ -104,6 +104,33 @@ def register_part(part_number, part_name, stock, location, price, logged_user, c
         exit()
 
 
+def remove_part(part_number, logged_user,config=CONFIG):
+    try:
+
+        with ps.connect(**config) as conn:
+            with conn.cursor() as cursor:
+                cursor.execute(f"""DELETE FROM "Parts"."Warehouse"
+                                   WHERE "Part_number" = '{part_number}';""")
+                conn.commit()
+        logging.info(
+            f"""User {logged_user} a accesat baza de date pentru a sterge piesa {part_number}.""")
+
+        return True
+
+    except pserrors.SyntaxError as e:
+
+        logging.error(f"Eroare la stergerea informatiilor din baza de date. Query-ul a fost scris gresit. \n {e}")
+
+    except pserrors.UniqueViolation as e:
+
+        logging.error(f"Eroare la stergerea informatiilor din baza de date, piesa introduse este deja inregistrata. \n {e}")
+
+    except Exception as e:
+        psycopg2.errors.lookup(e)
+        logging.error(f"Eroare la stergerea informatiilor din baza de date: {e}")
+        exit()
+
+
 def recieve_shipment(part_number, stock, logged_user, config=CONFIG):
     try:
 

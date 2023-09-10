@@ -243,7 +243,7 @@ class ManageParts:
         self.clear_button = tk.Button(self.root, text="Clear", font=("Arial", "14"))
         self.clear_button.grid(row=7, column=2, pady=20)
 
-        self.remove_button = tk.Button(self.root, text="Remove", font=("Arial", "14"))
+        self.remove_button = tk.Button(self.root, text="Remove", font=("Arial", "14"), command=self.remove_btn_cmd)
         self.remove_button.grid(row=7, column=1, pady=20)
 
         # Widgets declaration
@@ -309,6 +309,21 @@ class ManageParts:
         else:
             return messagebox.showerror(title="Error",
                                         message=f"Piesa nu poate fi adaugata, va rugam sa verificati datele introduse.")
+
+    def remove_btn_cmd(self):
+
+        part_number = self.part_number_entry.get()
+
+        status = DB_actions.remove_part(part_number=part_number,
+                                        logged_user=USERNAME)
+
+        if status is True:
+            return messagebox.showinfo(title="Message",
+                                       message=f"Piesa {part_number} a fost stearsa cu succes."),\
+                   self.root.destroy()
+        else:
+            return messagebox.showerror(title="Error",
+                                        message=f"Piesa nu poate fi stearsa, va rugam sa verificati datele introduse.")
 
 
 class AutoDetails:

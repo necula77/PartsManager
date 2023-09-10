@@ -1,17 +1,29 @@
-from tkinter import *
-import os
+def encrypt(text, s):
+    result = ""
 
-tk=Tk()
-var=StringVar()
-Entry(tk,textvariable=var).pack()
+    for i in range(len(text)):
+        char = text[i]
 
-# load the text before startup
-if os.path.isfile('save.txt'):
-    with open('save.txt','r') as f:
-        var.set(f.read())
+        if (char.isupper()):
+            result += chr((ord(char) + s - 65) % 26 + 65)
+        else:
+            result += chr((ord(char) + s - 97) % 26 + 97)
 
-mainloop()
+    return result
 
-# save the text after shutdown
-with open('save.txt','w') as f:
-    f.write(var.get())
+
+def decrypt(text, s):
+    result = ""
+
+    for i in range(len(text)):
+        char = text[i]
+
+        if (char.isupper()):
+            result += chr((ord(char) - s - 65) % 26 + 65)
+        else:
+            result += chr((ord(char) - s - 97) % 26 + 97)
+
+    return result
+
+
+print(encrypt("rootsingidunum", 4))
