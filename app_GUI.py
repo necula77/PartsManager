@@ -106,15 +106,20 @@ class PartsManager():
         self.recieve_shipment_button.grid(row=0, column=2, pady=20)
         self.recieve_shipment_button.configure(borderwidth=1, font='Calibri 12 bold')
 
-        self.add_part_to_db_button = tk.Button(self.win, text="Add Part", font=("Arial", "14"))
+        self.add_part_to_db_button = tk.Button(self.win,
+                                               text="Manage Parts",
+                                               font=("Arial", "14"),
+                                               command=ManageParts)
         self.add_part_to_db_button.grid(row=0, column=3, pady=20)
         self.add_part_to_db_button.configure(borderwidth=1, font='Calibri 12 bold')
 
-        self.add_table_row_button = tk.Button(self.win, text="Add row", font=("Arial", "14"), command=lambda: self.add_table_row(self.table_row))
-        # label to position the button better
-        self.empty_label = tk.Label(self.win, text="      ", font=("Source Code Pro", "14"))
-        self.empty_label.grid(row=3, column=5, pady=10)
-        # label to position the button better
+        self.add_table_row_button = tk.Button(self.win,
+                                              text="Add row",
+                                              font=("Arial", "14"),
+                                              command=lambda: self.add_table_row(self.table_row))
+
+        self.position_empty_label(3, 5)
+
         self.add_table_row_button.grid(row=3, column=6, pady=40, sticky="e")
         self.add_table_row_button.configure(borderwidth=1, font='Calibri 12 bold')
 
@@ -130,8 +135,8 @@ class PartsManager():
 
         # widgets rendering
 
-        self.part_name_label.grid(row=2, column=0, pady=10)
-        self.part_number_label.grid(row=2, column=1, pady=10)
+        self.part_number_label.grid(row=2, column=0, pady=10)
+        self.part_name_label.grid(row=2, column=1, pady=10)
         self.stock_label.grid(row=2, column=2, pady=10)
         self.price_label.grid(row=2, column=3, pady=10)
         self.location_in_warehouse_label.grid(row=2, column=4, pady=10)
@@ -139,6 +144,11 @@ class PartsManager():
 
         self.win.mainloop()
         self.status = False
+
+    def position_empty_label(self, row, column):
+        # label to position the button better
+        self.empty_label = tk.Label(self.win, text="      ", font=("Source Code Pro", "14"))
+        self.empty_label.grid(row=row, column=column, pady=10)
 
     def create_table(self, row, column, start_row=0):
         last_row = 0
@@ -161,7 +171,91 @@ class PartsManager():
         webbrowser.open('https://web.tecalliance.net/tecdocsw/ro/login')
 
 
-class AutoDetails():
+class ManageParts:
+
+    def __init__(self):
+        self.root = tk.Tk()
+        self.root.title("Manage Parts")
+        self.root.geometry("535x320+550+270")
+        center_window(self.root)
+
+        # Buttons
+
+        self.send_button = tk.Button(self.root, text="Send", font=("Arial", "14"), command=self.send_btn_cmd)
+        self.send_button.grid(row=7, column=3, pady=20)
+
+        self.clear_button = tk.Button(self.root, text="Clear", font=("Arial", "14"))
+        self.clear_button.grid(row=7, column=2, pady=20)
+
+        self.remove_button = tk.Button(self.root, text="Remove", font=("Arial", "14"))
+        self.remove_button.grid(row=7, column=1, pady=20)
+
+        # Widgets declaration
+
+        self.part_number_label = tk.Label(self.root, text="Part number", font=("Arial", "14"))
+        self.part_number_entry = tk.Entry(self.root, width=20, font=("Arial", "14"))
+
+        self.part_name_label = tk.Label(self.root, text="Part name", font=("Arial", "14"))
+        self.part_name_entry = tk.Entry(self.root, width=20, font=("Arial", "14"))
+
+        self.stock_label = tk.Label(self.root, text="Stock", font=("Arial", "14"))
+        self.stock_entry = tk.Entry(self.root, width=20, font=("Arial", "14"))
+
+        self.location_label = tk.Label(self.root, text="Location", font=("Arial", "14"))
+        self.location_entry = tk.Entry(self.root, width=20, font=("Arial", "14"))
+
+        self.price_label = tk.Label(self.root, text="Price", font=("Arial", "14"))
+        self.price_entry = tk.Entry(self.root, width=20, font=("Arial", "14"))
+
+        # Widgets rendering
+
+        self.part_number_label.grid(row=2, column=1, pady=10)
+        self.part_number_entry.grid(row=2, column=2, pady=5)
+
+        self.part_name_label.grid(row=3, column=1, pady=10)
+        self.part_name_entry.grid(row=3, column=2, pady=5)
+
+        self.stock_label.grid(row=4, column=1, pady=10)
+        self.stock_entry.grid(row=4, column=2, pady=5)
+
+        self.location_label.grid(row=5, column=1, pady=10)
+        self.location_entry.grid(row=5, column=2, pady=5)
+
+        self.price_label.grid(row=6, column=1, pady=10)
+        self.price_entry.grid(row=6, column=2, pady=5)
+
+        self.root.mainloop()
+
+    def position_empty_label(self, row, column):
+        # label to position the button better
+        self.empty_label = tk.Label(self.root, text="      ", font=("Source Code Pro", "14"))
+        self.empty_label.grid(row=row, column=column, pady=10)
+
+    def send_btn_cmd(self):
+
+        part_number = self.part_number_entry.get()
+        part_name = self.part_name_entry.get()
+        stock = self.stock_entry.get()
+        location = self.location_entry.get()
+        price = self.price_entry.get()
+
+        status = DB_actions.register_part(part_number=part_number,
+                                          part_name=part_name,
+                                          stock=stock,
+                                          location=location,
+                                          price=price,
+                                          logged_user=USERNAME)
+
+        if status is True:
+            return messagebox.showinfo(title="Message",
+                                       message=f"Piesa {part_name} a fost introdusa cu succes."),\
+                   self.root.destroy()
+        else:
+            return messagebox.showerror(title="Error",
+                                        message=f"Piesa nu poate fi adaugata, va rugam sa verificati datele introduse.")
+
+
+class AutoDetails:
 
     def __init__(self):
 

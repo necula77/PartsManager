@@ -1,7 +1,8 @@
 import json
 import logging
 import psycopg2 as ps
-from psycopg2 import errors
+import psycopg2.errors
+from psycopg2 import errors as pserrors
 import requests
 from psycopg2.extras import RealDictCursor
 import app_GUI
@@ -76,6 +77,33 @@ def recieve_from_db(config=CONFIG, vin="", license_plate=""):
         exit()
 
 
+def register_part(part_number, part_name, stock, location, price, logged_user, config=CONFIG):
+    try:
+
+        with ps.connect(**config) as conn:
+            with conn.cursor() as cursor:
+                cursor.execute(f"""insert into "Parts"."Warehouse"("Part_number", "Part_name", "Stock", "Location","Price")
+                                   values ('{part_number}', '{part_name}', '{stock}', '{location}', {price});""")
+                conn.commit()
+        logging.info(
+            f"""User {logged_user} a accesat baza de date pentru a adauga {part_name}, {part_number} in baza de date.""")
+
+        return True
+
+    except pserrors.SyntaxError as e:
+
+        logging.error(f"Eroare la introducerea in datelor in baza de date. Query-ul a fost scris gresit. \n {e}")
+
+    except pserrors.UniqueViolation as e:
+
+        logging.error(f"Eroare la introducerea datelor in baza de date, piesa introduse este deja inregistrata. \n {e}")
+
+    except Exception as e:
+        psycopg2.errors.lookup(e)
+        logging.error(f"Eroare la introducerea datelor in baza de date: {e}")
+        exit()
+
+
 if __name__ == '__main__':
-    insert_in_db()
+    register_part("0102C-13256", "Electromotor", 3, "A-12", 780.7, "necula77")
 
