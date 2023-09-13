@@ -3,9 +3,7 @@ import logging
 import psycopg2 as ps
 import psycopg2.errors
 from psycopg2 import errors as pserrors
-import requests
 from psycopg2.extras import RealDictCursor
-import app_GUI
 
 LOGGER = logging.getLogger(__name__)
 
@@ -20,6 +18,7 @@ logging.basicConfig(level=logging.INFO,
 
 
 def find_error_code(e):
+    psycopg2.errors.lookup(e)
     print('Error! Code: {c}, Message, {m}'.format(c=type(e).__name__, m=str(e)))
 
 
@@ -104,18 +103,55 @@ def register_part(part_number, part_name, stock, location, price, logged_user, c
         exit()
 
 
-def recieve_shipment(part_number, stock, logged_user, config=CONFIG):
+def remove_part(part_number, logged_user,config=CONFIG):
+    try:
+
+        with ps.connect(**config) as conn:
+            with conn.cursor() as cursor:
+                cursor.execute(f"""DELETE FROM "Parts"."Warehouse"
+                                   WHERE "Part_number" = '{part_number}';""")
+                conn.commit()
+        logging.info(
+            f"""User {logged_user} a accesat baza de date pentru a sterge piesa {part_number}.""")
+
+        return True
+
+    except pserrors.SyntaxError as e:
+
+        logging.error(f"Eroare la stergerea informatiilor din baza de date. Query-ul a fost scris gresit. \n {e}")
+
+    except pserrors.UniqueViolation as e:
+
+        logging.error(f"Eroare la stergerea informatiilor din baza de date, piesa introduse este deja inregistrata. \n {e}")
+
+    except Exception as e:
+        psycopg2.errors.lookup(e)
+        logging.error(f"Eroare la stergerea informatiilor din baza de date: {e}")
+        exit()
+
+
+def recieve_shipment(part_number, stock_to_add, logged_user, config=CONFIG):
     try:
 
         with ps.connect(**config) as conn:
             with conn.cursor() as cursor:
                 cursor.execute(f"""UPDATE "Parts"."Warehouse"
-                                   SET "Stock" = {stock}
+                                   SET "Stock" = "Stock" + '{stock_to_add}'
                                    WHERE "Part_number" = '{part_number}';""")
                 conn.commit()
+
+        with ps.connect(**config) as conn:
+            with conn.cursor() as cursor:
+                cursor.execute(f"""SELECT "Stock"
+                                   FROM "Parts"."Warehouse"
+                                   WHERE "Part_number" = '{part_number}';""")
+
+                conn.commit()
+                new_stock = cursor.fetchone()
+
         logging.info(
             f"""User {logged_user} a accesat baza de date
-                pentru a modifica stockul din depozit pentru {part_number}, acesta fiind acum {stock}.""")
+                pentru a modifica stockul din depozit pentru {part_number}, acesta fiind acum {new_stock[0]} bucati.""")
 
         return True
 
@@ -128,11 +164,11 @@ def recieve_shipment(part_number, stock, logged_user, config=CONFIG):
         logging.error(f"Eroare la introducerea datelor in baza de date, piesa introduse este deja inregistrata. \n {e}")
 
     except Exception as e:
-        psycopg2.errors.lookup(e)
+
         logging.error(f"Eroare la introducerea datelor in baza de date: {e}")
         exit()
 
 
-if __name__ == '__main__':
-    register_part("0102C-13256", "Electromotor", 3, "A-12", 780.7, "necula77")
+# if __name__ == '__main__':
+#     register_part("0102C-13256", "Electromotor", 3, "A-12", 780.7, "necula77")
 

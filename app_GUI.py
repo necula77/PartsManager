@@ -3,11 +3,9 @@ from tkinter import *
 from tkinter import messagebox
 import login_sequence as ls
 from login_sequence import config
-import psycopg2 as ps
 import logging
 import DB_actions
 import webbrowser
-import cv2
 from PIL import Image, ImageTk
 import json
 
@@ -16,13 +14,13 @@ USERNAME = ""
 LOGGER = logging.getLogger(__name__)
 
 logging.basicConfig(level=logging.INFO,
-                        format="%(asctime)s - %(levelname)s - %(filename)s - %(lineno)s - %(message)s",
-                        datefmt="%d-%b-%Y %H:%M:%S",
-                        handlers=[
-                            logging.FileHandler("app.log"),  # apare intr un fisier
-                            logging.StreamHandler()  # apare in consola ca un print
-                        ]
-                        )
+                    format="%(asctime)s - %(levelname)s - %(filename)s - %(lineno)s - %(message)s",
+                    datefmt="%d-%b-%Y %H:%M:%S",
+                    handlers=[
+                        logging.FileHandler("app.log"),  # apare intr un fisier
+                        logging.StreamHandler()  # apare in consola ca un print
+                    ]
+                    )
 
 
 def center_window(win):
@@ -52,6 +50,11 @@ def validate_input(P, max_char: int):
 
 class PartsManager:
 
+    global max_row
+
+    next_row = 3
+    max_row = 0
+
     def __init__(self):
 
         self.win = tk.Tk()
@@ -74,7 +77,7 @@ class PartsManager:
 
         self.frame = tk.Frame(self.win)
         self.frame.columnconfigure(0, weight=1)
-        self.frame.columnconfigure(1, weight=2)
+        self.frame.columnconfigure(1, weight=1)
         self.frame.columnconfigure(2, weight=1)
         self.frame.columnconfigure(3, weight=1)
         self.frame.columnconfigure(4, weight=1)
@@ -90,37 +93,46 @@ class PartsManager:
 
         # Table
 
-        self.table_row = self.create_table(1, 5, start_row=3)
+        self.entry_widgets = []
+
+        self.add_table_row()
 
         # Buttons
 
-        self.auto_details_button = tk.Button(self.win, text="Auto Details", font=("Arial", "14"), command=AutoDetails)
+        self.auto_details_button = tk.Button(self.win,
+                                             text="Auto Details",
+                                             command=AutoDetails)
         self.auto_details_button.grid(row=0, column=0, pady=20)
         self.auto_details_button.configure(borderwidth=1, font='Calibri 12 bold')
 
-        self.open_tec_doc_button = tk.Button(self.win, text="TecDoc", font=("Arial", "14"), command=self.open_tec_doc)
+        self.open_tec_doc_button = tk.Button(self.win,
+                                             text="TecDoc",
+                                             command=self.open_tec_doc)
         self.open_tec_doc_button.grid(row=0, column=1, pady=20)
         self.open_tec_doc_button.configure(borderwidth=1, font='Calibri 12 bold')
 
-        self.recieve_shipment_button = tk.Button(self.win, text="Recieve Shipment", font=("Arial", "14"), command=RecieveShipment)
+        self.recieve_shipment_button = tk.Button(self.win,
+                                                 text="Recieve Shipment",
+                                                 command=RecieveShipment)
         self.recieve_shipment_button.grid(row=0, column=2, pady=20)
         self.recieve_shipment_button.configure(borderwidth=1, font='Calibri 12 bold')
 
         self.add_part_to_db_button = tk.Button(self.win,
                                                text="Manage Parts",
-                                               font=("Arial", "14"),
                                                command=ManageParts)
         self.add_part_to_db_button.grid(row=0, column=3, pady=20)
         self.add_part_to_db_button.configure(borderwidth=1, font='Calibri 12 bold')
 
+        self.clear_table_button = tk.Button(self.win,
+                                            text="Clear table",
+                                            command=self.clear_table)
+        self.clear_table_button.grid(row=0, column=4, pady=20)
+        self.clear_table_button.configure(borderwidth=1, font='Calibri 12 bold')
+
         self.add_table_row_button = tk.Button(self.win,
                                               text="Add row",
-                                              font=("Arial", "14"),
-                                              command=lambda: self.add_table_row(self.table_row))
-
-        self.position_empty_label(3, 5)
-
-        self.add_table_row_button.grid(row=3, column=6, pady=40, sticky="e")
+                                              command=self.add_table_row)
+        self.add_table_row_button.grid(row=2, column=6, pady=40, sticky="ne")
         self.add_table_row_button.configure(borderwidth=1, font='Calibri 12 bold')
 
         # widgets declaration
@@ -131,7 +143,7 @@ class PartsManager:
         self.price_label = tk.Label(self.win, text="Price", font=("Source Code Pro", "14"))
         self.location_in_warehouse_label = tk.Label(self.win, text="Location", font=("Source Code Pro", "14"))
 
-        self._entry = tk.Entry(self.win, width=15, font=("Arial", "14"))
+        # self._entry = tk.Entry(self.win, width=15, font=("Arial", "14"))
 
         # widgets rendering
 
@@ -145,27 +157,39 @@ class PartsManager:
         self.win.mainloop()
         self.status = False
 
-    def position_empty_label(self, row, column):
-        # label to position the button better
-        self.empty_label = tk.Label(self.win, text="      ", font=("Source Code Pro", "14"))
-        self.empty_label.grid(row=row, column=column, pady=10)
+    def add_table_row(self):
+        global max_row
 
-    def create_table(self, row, column, start_row=0):
-        last_row = 0
+        if max_row < 10:
+            row_widgets = []
+            for i in range(5):
+                new_row = tk.Entry(self.win, width=10, fg="black", font=('Arial', 16, 'bold'))
+                new_row.grid(row=self.next_row, column=i)
+                row_widgets.append(new_row)
 
-        for i in range(row):
-            last_row += 1
-            for j in range(column):
-                table = tk.Entry(self.win, width=10, fg="gray", font=('Arial', 16, 'bold'))
-                table.grid(row=i + start_row, column=j)
+            self.entry_widgets.append(row_widgets)
+            self.next_row += 1
+            max_row += 1
+        else:
+            tk.messagebox.showinfo(title="Maximum rows",
+                                   message="Maximum number of rows has been reached, please create a new app.")
 
-        return last_row
+    def clear_table(self):
+        global max_row
 
-    def add_table_row(self, actual_row):
+        for row_widgets in self.entry_widgets:
+            for entry in row_widgets:
+                entry.grid_remove()
+        self.entry_widgets.clear()
 
-        for j in range(5):
-            table = tk.Entry(self.win, width=10, fg="gray", font=('Arial', 16, 'bold'))
-            table.grid(row=actual_row, column=j)
+        self.add_table_row()
+        max_row = 0
+
+    def fill_table_entrys(self):
+
+        data = {}
+
+
 
     def open_tec_doc(self):
         webbrowser.open('https://web.tecalliance.net/tecdocsw/ro/login')
@@ -192,7 +216,7 @@ class RecieveShipment:
         self.part_number_label = tk.Label(self.root, text="Part number", font=("Arial", "14"))
         self.part_number_entry = tk.Entry(self.root, width=15, font=("Arial", "14"))
 
-        self.stock_label = tk.Label(self.root, text="Stock", font=("Arial", "14"))
+        self.stock_label = tk.Label(self.root, text="Stock recieved", font=("Arial", "14"))
         self.stock_entry = tk.Entry(self.root, width=15, font=("Arial", "14"))
 
         # Widgets rendering
@@ -208,10 +232,10 @@ class RecieveShipment:
     def recieve_btn_cmd(self):
 
         part_number = self.part_number_entry.get()
-        stock = self.stock_entry.get()
+        stock_to_add = self.stock_entry.get()
 
         status = DB_actions.recieve_shipment(part_number=part_number,
-                                             stock=stock,
+                                             stock_to_add=stock_to_add,
                                              logged_user=USERNAME)
 
         if status is True:
@@ -235,15 +259,23 @@ class ManageParts:
         self.root.geometry("535x320+550+270")
         center_window(self.root)
 
+        self.root.columnconfigure(1, weight=1)
+        self.root.columnconfigure(2, weight=1)
+        self.root.columnconfigure(3, weight=2)
+        self.root.columnconfigure(4, weight=2)
+
         # Buttons
 
         self.send_button = tk.Button(self.root, text="Send", font=("Arial", "14"), command=self.send_btn_cmd)
-        self.send_button.grid(row=7, column=3, pady=20)
+        self.send_button.grid(row=7, column=4, pady=20)
+
+        self.retrieve_data_button = tk.Button(self.root, text="Retrieve data", font=("Arial", "14"))
+        self.retrieve_data_button.grid(row=7, column=3, pady=20)
 
         self.clear_button = tk.Button(self.root, text="Clear", font=("Arial", "14"))
         self.clear_button.grid(row=7, column=2, pady=20)
 
-        self.remove_button = tk.Button(self.root, text="Remove", font=("Arial", "14"))
+        self.remove_button = tk.Button(self.root, text="Remove", font=("Arial", "14"), command=self.remove_btn_cmd)
         self.remove_button.grid(row=7, column=1, pady=20)
 
         # Widgets declaration
@@ -309,6 +341,21 @@ class ManageParts:
         else:
             return messagebox.showerror(title="Error",
                                         message=f"Piesa nu poate fi adaugata, va rugam sa verificati datele introduse.")
+
+    def remove_btn_cmd(self):
+
+        part_number = self.part_number_entry.get()
+
+        status = DB_actions.remove_part(part_number=part_number,
+                                        logged_user=USERNAME)
+
+        if status is True:
+            return messagebox.showinfo(title="Message",
+                                       message=f"Piesa {part_number} a fost stearsa cu succes."),\
+                   self.root.destroy()
+        else:
+            return messagebox.showerror(title="Error",
+                                        message=f"Piesa nu poate fi stearsa, va rugam sa verificati datele introduse.")
 
 
 class AutoDetails:
@@ -626,6 +673,7 @@ class LoginWindow:
 
 
 if __name__ == "__main__":
+
     # LoginWindow()
     PartsManager()
 
