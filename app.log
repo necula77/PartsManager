@@ -1,0 +1,29 @@
+11-Sep-2023 18:06:54 - ERROR - DB_actions.py - 95 - Eroare la introducerea in datelor in baza de date. Query-ul a fost scris gresit. 
+ syntax error at or near ")"
+LINE 2: ...                                  values ('', '', '', '', );
+                                                                     ^
+
+11-Sep-2023 20:04:56 - INFO - DB_actions.py - 144 - User  a accesat baza de date
+                pentru a modifica stockul din depozit pentru 0102C-13256, acesta fiind acum 1.
+11-Sep-2023 20:05:04 - INFO - DB_actions.py - 144 - User  a accesat baza de date
+                pentru a modifica stockul din depozit pentru 0102C-13256, acesta fiind acum 1.
+11-Sep-2023 20:05:12 - INFO - DB_actions.py - 144 - User  a accesat baza de date
+                pentru a modifica stockul din depozit pentru 0102C-13256, acesta fiind acum 2.
+11-Sep-2023 20:08:34 - ERROR - DB_actions.py - 161 - Eroare la introducerea in datelor in baza de date. Query-ul a fost scris gresit. 
+ unterminated quoted identifier at or near "" = '0102C-14003';"
+LINE 3: ...                                WHERE "Part_number" = '0102C...
+                                                             ^
+
+11-Sep-2023 20:10:13 - INFO - DB_actions.py - 153 - User  a accesat baza de date
+                pentru a modifica stockul din depozit pentru 0102C-14003, acesta fiind acum (9,).
+11-Sep-2023 20:10:40 - INFO - DB_actions.py - 153 - User  a accesat baza de date
+                pentru a modifica stockul din depozit pentru 0102C-14003, acesta fiind acum 10.
+11-Sep-2023 20:12:58 - ERROR - DB_actions.py - 95 - Eroare la introducerea in datelor in baza de date. Query-ul a fost scris gresit. 
+ syntax error at or near ")"
+LINE 2: ...                       values ('0102C-14003', '', '', '', );
+                                                                     ^
+
+13-Sep-2023 20:03:01 - ERROR - DB_actions.py - 56 - Eroare la introducerea datelor in baza de date: invalid input syntax for type integer: ""
+LINE 3:                             "KW" = '',
+                                           ^
+

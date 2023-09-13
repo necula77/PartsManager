@@ -1,7 +1,7 @@
 import json
 import logging
 import psycopg2 as ps
-from psycopg2 import errors
+from psycopg2 import errors as pserrors
 
 
 LOGGER = logging.getLogger(__name__)
@@ -72,10 +72,13 @@ def signup_func(username, password, first_name, last_name, function, authorizati
                 conn.commit()
         logging.info(f"User: {username} a fost adaugat in baza de date, NUME: {last_name} PRENUME: {first_name}.")
 
-    except errors.UniqueViolation:
+    except pserrors.UniqueViolation:
+
         logging.error(f"Username-ul: {username}, exista deja, va rugam sa alegeti altul.")
         conn.rollback()
+
     except Exception as e:
+
         logging.error(f"Eroare la inregistrare: {e}")
         exit()
 
