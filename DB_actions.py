@@ -169,6 +169,25 @@ def recieve_shipment(part_number, stock_to_add, logged_user, config=CONFIG):
         exit()
 
 
+def recieve_info_abt_part(part_number, config=CONFIG):
+
+    try:
+        with ps.connect(**config) as conn:
+            with conn.cursor() as cursor:
+
+                sql_query = f"""SELECT "Part_name", "Stock", "Price", "Location"
+                                FROM "Parts"."Warehouse"
+                                WHERE "Part_number" = '{part_number}';"""
+
+                cursor.execute(sql_query)
+                data = cursor.fetchone()
+
+                return data
+
+    except Exception as e:
+        logging.error(f"Eroare la identificarea piesei: {e}.")
+
 # if __name__ == '__main__':
 #     register_part("0102C-13256", "Electromotor", 3, "A-12", 780.7, "necula77")
 
+print(recieve_info_abt_part("0102C-14003"))

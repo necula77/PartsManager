@@ -124,7 +124,7 @@ class PartsManager:
         self.add_part_to_db_button.configure(borderwidth=1, font='Calibri 12 bold')
 
         self.clear_table_button = tk.Button(self.win,
-                                            text="Clear table",
+                                            text="Reset table",
                                             command=self.clear_table)
         self.clear_table_button.grid(row=0, column=4, pady=20)
         self.clear_table_button.configure(borderwidth=1, font='Calibri 12 bold')
@@ -163,8 +163,12 @@ class PartsManager:
         if max_row < 10:
             row_widgets = []
             for i in range(5):
-                new_row = tk.Entry(self.win, width=10, fg="black", font=('Arial', 16, 'bold'))
+                new_row = tk.Entry(self.win, width=15, fg="black", font=('Arial', 10, 'bold'))
                 new_row.grid(row=self.next_row, column=i)
+
+                if i == 0:
+                    new_row.bind('<Return>', self.fill_table_entries)
+
                 row_widgets.append(new_row)
 
             self.entry_widgets.append(row_widgets)
@@ -185,11 +189,28 @@ class PartsManager:
         self.add_table_row()
         max_row = 0
 
-    def fill_table_entrys(self):
-
-        data = {}
-
-
+    def fill_table_entries(self, event=None):  # Accept the event argument, but it's not used
+        for row_widgets in self.entry_widgets:
+            part_number_entry = row_widgets[0].get()  # Assuming the first entry is for part numbers
+            if part_number_entry:
+                data = DB_actions.recieve_info_abt_part(part_number=part_number_entry)
+                if data:
+                    # Assuming data is a dictionary with keys for part name, stock, price, and location
+                    part_name, stock, price, location = data[0], data[1], data[2], data[3]
+                    row_widgets[1].delete(0, tk.END)  # Clear the existing entry
+                    row_widgets[1].insert(0, part_name)
+                    row_widgets[2].delete(0, tk.END)
+                    row_widgets[2].insert(0, stock)
+                    row_widgets[3].delete(0, tk.END)
+                    row_widgets[3].insert(0, price)
+                    row_widgets[4].delete(0, tk.END)
+                    row_widgets[4].insert(0, location)
+                else:
+                    # Handle the case where data is not found for the given part number
+                    messagebox.showerror("Error", f"Data not found for part number: {part_number_entry}")
+            else:
+                # Handle the case where the part number entry is empty
+                messagebox.showerror("Error", "Part number cannot be empty")
 
     def open_tec_doc(self):
         webbrowser.open('https://web.tecalliance.net/tecdocsw/ro/login')
@@ -484,8 +505,14 @@ class AutoDetails:
         file_path = "AutoDetails.json"
 
         try:
-            with open(file_path, 'r') as json_file:
-                data = json.load(json_file)
+
+            data = {}
+
+            with open("AutoDetails.json", "r") as f:
+                text = f.read()
+                if text:
+                    data = json.loads(text)
+
 
             self.vin_entry.delete(0, 'end')
             self.vin_entry.insert(0, data.get("VIN", ""))
@@ -553,9 +580,19 @@ class AutoDetails:
 
     def retrieve_btn_cmd(self):
 
-        json_data = {}
-        with open("AutoDetails.json", 'w') as json_file:
-            json.dump(json_data, json_file, indent=4)
+        with open("AutoDetails.json", "r") as f:
+            text = f.read()
+            if text:
+                data = json.loads(text)
+
+                if data:
+                    if self.license_plate_entry.get() != data["License Plate"] and self.license_plate_entry.get():
+                        self.delete_data_from_entrys(delete_license=False)
+                    if self.vin_entry.get() != data["VIN"] and self.vin_entry.get():
+                        self.delete_data_from_entrys(delete_vin=False)
+
+        with open("AutoDetails.json", 'w') as f:
+            f.truncate()
 
         data_dict = {
             "VIN": "",
@@ -573,17 +610,7 @@ class AutoDetails:
         license = self.license_plate_entry.get()
         data = DB_actions.recieve_from_db(vin=vin, license_plate=license)
 
-        # deleting data from entrys
-        self.vin_entry.delete(0, 'end')
-        self.license_plate_entry.delete(0, 'end')
-        self.engine_entry.delete(0, 'end')
-        self.km_entry.delete(0, 'end')
-        self.kw_entry.delete(0, 'end')
-        self.cc_entry.delete(0, 'end')
-        self.make_entry.delete(0, 'end')
-        self.model_entry.delete(0, 'end')
-        self.year_entry.delete(0, 'end')
-        self.fuel_type_entry.delete(0, 'end')
+        self.delete_data_from_entrys()
 
         # now inserting data into entrys
         self.vin_entry.insert(0, data['VIN'])
@@ -600,6 +627,21 @@ class AutoDetails:
         self.save_data_to_json()
 
         return data
+
+    def delete_data_from_entrys(self, delete_vin=True, delete_license=True):
+        # deleting data from entrys
+        if delete_vin is True:
+            self.vin_entry.delete(0, 'end')
+        if delete_license is True:
+            self.license_plate_entry.delete(0, 'end')
+        self.engine_entry.delete(0, 'end')
+        self.km_entry.delete(0, 'end')
+        self.kw_entry.delete(0, 'end')
+        self.cc_entry.delete(0, 'end')
+        self.make_entry.delete(0, 'end')
+        self.model_entry.delete(0, 'end')
+        self.year_entry.delete(0, 'end')
+        self.fuel_type_entry.delete(0, 'end')
 
 
 class LoginWindow:
