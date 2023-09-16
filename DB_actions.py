@@ -187,7 +187,20 @@ def recieve_info_abt_part(part_number, config=CONFIG):
     except Exception as e:
         logging.error(f"Eroare la identificarea piesei: {e}.")
 
+
+def check_for_car(vin, license_plate, config=CONFIG):
+
+    with ps.connect(**config) as conn:
+        with conn.cursor() as cursor:
+            cursor.execute(f"""SELECT "VIN", "License Plate"
+                               from "Auto_Details"."REGISTERED_CARS"
+                               where "VIN"='{vin}' OR "License Plate"='{license_plate}';""")
+            data = cursor.fetchone()
+
+    if data is None:
+        return False
+    else:
+        return True
+
 # if __name__ == '__main__':
 #     register_part("0102C-13256", "Electromotor", 3, "A-12", 780.7, "necula77")
-
-print(recieve_info_abt_part("0102C-14003"))

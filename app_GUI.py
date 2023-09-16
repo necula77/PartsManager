@@ -51,9 +51,13 @@ def validate_input(P, max_char: int):
 class PartsManager:
 
     global max_row
+    global starting_x
+    global starting_y
 
     next_row = 3
     max_row = 0
+    starting_x = 5
+    starting_y = 130
 
     def __init__(self):
 
@@ -68,7 +72,7 @@ class PartsManager:
         # self.win.state("zoomed")
 
         # NU POATE FI MINIMIZATA SAU MAXIMIZATA APLICATIA
-        self.win.resizable(False, False)
+        # self.win.resizable(False, False)
 
         # pt full screen
         # self.width = self.win.winfo_screenwidth()
@@ -97,43 +101,59 @@ class PartsManager:
 
         self.add_table_row()
 
-        # Buttons
+        # Buttons declaration
 
         self.auto_details_button = tk.Button(self.win,
                                              text="Auto Details",
                                              command=AutoDetails)
-        self.auto_details_button.grid(row=0, column=0, pady=20)
+
         self.auto_details_button.configure(borderwidth=1, font='Calibri 12 bold')
 
         self.open_tec_doc_button = tk.Button(self.win,
                                              text="TecDoc",
                                              command=self.open_tec_doc)
-        self.open_tec_doc_button.grid(row=0, column=1, pady=20)
+
         self.open_tec_doc_button.configure(borderwidth=1, font='Calibri 12 bold')
 
         self.recieve_shipment_button = tk.Button(self.win,
                                                  text="Recieve Shipment",
                                                  command=RecieveShipment)
-        self.recieve_shipment_button.grid(row=0, column=2, pady=20)
+        # self.recieve_shipment_button.grid(row=0, column=2, pady=20)
         self.recieve_shipment_button.configure(borderwidth=1, font='Calibri 12 bold')
 
         self.add_part_to_db_button = tk.Button(self.win,
                                                text="Manage Parts",
                                                command=ManageParts)
-        self.add_part_to_db_button.grid(row=0, column=3, pady=20)
+        # self.add_part_to_db_button.grid(row=0, column=3, pady=20)
         self.add_part_to_db_button.configure(borderwidth=1, font='Calibri 12 bold')
 
         self.clear_table_button = tk.Button(self.win,
                                             text="Reset table",
                                             command=self.clear_table)
-        self.clear_table_button.grid(row=0, column=4, pady=20)
+        # self.clear_table_button.grid(row=0, column=4, pady=20)
         self.clear_table_button.configure(borderwidth=1, font='Calibri 12 bold')
 
         self.add_table_row_button = tk.Button(self.win,
                                               text="Add row",
                                               command=self.add_table_row)
-        self.add_table_row_button.grid(row=2, column=6, pady=40, sticky="ne")
+        # self.add_table_row_button.grid(row=2, column=6, pady=40, sticky="ne")
         self.add_table_row_button.configure(borderwidth=1, font='Calibri 12 bold')
+
+        # Buttons rendering
+
+        # self.auto_details_button.place(x=10, y=30)
+        # self.open_tec_doc_button.place(x=280, y=30)
+        # self.recieve_shipment_button.place(x=125, y=30)
+        # self.add_part_to_db_button.place(x=360, y=30)
+        # self.clear_table_button.place(x=490, y=30)
+        # self.add_table_row_button.place(x=630, y=115)
+
+        self.auto_details_button.place(x=620, y=170)
+        self.open_tec_doc_button.place(x=630, y=225)
+        self.recieve_shipment_button.place(x=600, y=280)
+        self.add_part_to_db_button.place(x=615, y=335)
+        self.clear_table_button.place(x=620, y=60)
+        self.add_table_row_button.place(x=630, y=115)
 
         # widgets declaration
 
@@ -147,11 +167,17 @@ class PartsManager:
 
         # widgets rendering
 
-        self.part_number_label.grid(row=2, column=0, pady=10)
-        self.part_name_label.grid(row=2, column=1, pady=10)
-        self.stock_label.grid(row=2, column=2, pady=10)
-        self.price_label.grid(row=2, column=3, pady=10)
-        self.location_in_warehouse_label.grid(row=2, column=4, pady=10)
+        self.part_name_label.place(x=135, y=90)
+        self.part_number_label.place(x=5, y=90)
+        self.stock_label.place(x=270, y=90)
+        self.price_label.place(x=390, y=90)
+        self.location_in_warehouse_label.place(x=495, y=90)
+
+        # self.part_number_label.grid(row=2, column=0, pady=10)
+        # self.part_name_label.grid(row=2, column=1, pady=10)
+        # self.stock_label.grid(row=2, column=2, pady=10)
+        # self.price_label.grid(row=2, column=3, pady=10)
+        # self.location_in_warehouse_label.grid(row=2, column=4, pady=10)
         # self._entry.grid(row=, column=, pady=5)
 
         self.win.mainloop()
@@ -159,18 +185,27 @@ class PartsManager:
 
     def add_table_row(self):
         global max_row
+        global starting_x
+        global starting_y
+
+        starting_x = 5
 
         if max_row < 10:
             row_widgets = []
+
             for i in range(5):
-                new_row = tk.Entry(self.win, width=15, fg="black", font=('Arial', 10, 'bold'))
-                new_row.grid(row=self.next_row, column=i)
+
+                new_row = tk.Entry(self.win, width=16, fg="black", font=('Arial', 10, 'bold'))
+                # new_row.grid(row=self.next_row, column=i)
+                new_row.place(x=starting_x, y=starting_y)
+                starting_x += 117
 
                 if i == 0:
                     new_row.bind('<Return>', self.fill_table_entries)
 
                 row_widgets.append(new_row)
 
+            starting_y += 20
             self.entry_widgets.append(row_widgets)
             self.next_row += 1
             max_row += 1
@@ -180,6 +215,11 @@ class PartsManager:
 
     def clear_table(self):
         global max_row
+        global starting_x
+        global starting_y
+
+        starting_x = 5
+        starting_y = 130
 
         for row_widgets in self.entry_widgets:
             for entry in row_widgets:
@@ -513,7 +553,6 @@ class AutoDetails:
                 if text:
                     data = json.loads(text)
 
-
             self.vin_entry.delete(0, 'end')
             self.vin_entry.insert(0, data.get("VIN", ""))
 
@@ -561,13 +600,22 @@ class AutoDetails:
         year = self.year_entry.get()
         fuel_type = self.fuel_type_entry.get()
 
-        sql_query = f"""UPDATE "Auto_Details"."REGISTERED_CARS"
-                        SET "Engine" = '{self.engine_entry.get()}',
-                            "KW" = '{self.kw_entry.get()}',
-                            "CMC" = '{self.cc_entry.get()}',
-                            "Fuel_Type" = '{self.fuel_type_entry.get()}',
-                            "KM" = '{self.km_entry.get()}'
-                        WHERE "VIN" = '{self.vin_entry.get()}';"""
+        check_for_car = DB_actions.check_for_car(vin=vin, license_plate=plate)
+
+        if check_for_car is True:
+            sql_query = f"""UPDATE "Auto_Details"."REGISTERED_CARS"
+                            SET "Engine" = '{self.engine_entry.get()}',
+                                "KW" = '{self.kw_entry.get()}',
+                                "CMC" = '{self.cc_entry.get()}',
+                                "Fuel_Type" = '{self.fuel_type_entry.get()}',
+                                "KM" = '{self.km_entry.get()}'
+                            WHERE "VIN" = '{self.vin_entry.get()}';"""
+        else:
+            sql_query = f"""INSERT INTO "Auto_Details"."REGISTERED_CARS" 
+                            ("VIN", "License Plate", "Manufacturer", "Model",
+                             "Year", "Engine", "KW", "CMC", "Fuel_Type", "KM")
+                            VALUES ('{vin}', '{plate}', '{make}', '{model}',
+                            {year}, '{engine}', {kw}, {cc}, '{fuel_type}', {km});"""
 
         status = DB_actions.insert_in_db(config=config, sql_query=sql_query,
                                          logged_user=USERNAME, license_plate=self.license_plate_entry.get(),
