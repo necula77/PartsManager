@@ -27,3 +27,5 @@ LINE 2: ...                       values ('0102C-14003', '', '', '', );
 LINE 3:                             "KW" = '',
                                            ^
 
+16-Sep-2023 12:59:23 - INFO - DB_actions.py - 46 - User  a accesat baza de date pentru a modifica datele masinii: B24AEN, WF04XXWPD46R72874.
+16-Sep-2023 13:00:41 - INFO - DB_actions.py - 46 - User  a accesat baza de date pentru a modifica datele masinii: B51TSV, WNUSFJ12U3N445556.
