@@ -1,6 +1,8 @@
 import tkinter as tk
 from tkinter import *
 from tkinter import messagebox
+
+import login_sequence
 import login_sequence as ls
 from login_sequence import config
 import logging
@@ -710,12 +712,14 @@ class AdminWindow:
         self.root.title("Admin panel")
         self.root.geometry("250x300")
         center_window(self.root)
+        self.root.resizable(False, False)
+
 
         # Buttons declarations
 
         self.register_user_button = tk.Button(self.root,
                                               text="Regiser user",
-                                              command=self.register_user)
+                                              command=lambda:[self.register_user_window, self.root.destroy])
         self.register_user_button.configure(borderwidth=1, font='Calibri 12 bold')
 
         self.delete_user_button = tk.Button(self.root,
@@ -726,6 +730,7 @@ class AdminWindow:
         self.update_user_login_info_button = tk.Button(self.root,
                                                        text="Update user login info",
                                                        command=self.update_user_login_info)
+        self.update_user_login_info_button.configure(borderwidth=1, font='Calibri 12 bold')
 
         self.delete_car_button = tk.Button(self.root,
                                            text="Delete car information",
@@ -734,10 +739,10 @@ class AdminWindow:
 
         # Buttons rendering
 
-        self.register_user_button.place(x=50, y=50)
-        self.delete_user_button.place(x=50, y=100)
-        self.update_user_login_info_button.place(x=50, y=150)
-        self.delete_car_button.place(x=50, y=200)
+        self.register_user_button.place(x=80, y=50)
+        self.delete_user_button.place(x=83, y=100)
+        self.update_user_login_info_button.place(x=45, y=150)
+        self.delete_car_button.place(x=43, y=200)
 
         # Widgets declarations
 
@@ -749,8 +754,82 @@ class AdminWindow:
 
         self.root.mainloop()
 
-    def register_user(self):
-        pass
+    def register_user_window(self):
+        root = tk.Tk()
+        root.title("Register user")
+        root.geometry("400x300")
+        center_window(root)
+        root.resizable(False, False)
+
+
+        # Buttons declarations
+
+        register_button = tk.Button(root,
+                                    text="Register user",
+                                    command=self.register_user_function)
+        register_button.configure(borderwidth=1, font='Calibri 12 bold')
+
+        clear_button = tk.Button(root,
+                                text="Clear",
+                                 command=self.clear_btn_func)
+        clear_button.configure(borderwidth=1, font='Calibri 12 bold')
+
+        # Buttons rendering
+
+        register_button.place(x=140, y=225)
+        clear_button.place(x=25, y=225)
+
+        # Widgets declarations
+
+        first_name_label = tk.Label(root, text="First name:", font=("Arial", "14"))
+        last_name_label = tk.Label(root, text="Last name:", font=("Arial", "14"))
+        username_label = tk.Label(root, text="Username:", font=("Arial", "14"))
+        password_label = tk.Label(root, text="Password:", font=("Arial", "14"))
+        function_label = tk.Label(root, text="Function:", font=("Arial", "14"))
+
+        self.first_name_entry = tk.Entry(root, width=15, font=("Arial", "14"))
+        self.last_name_entry = tk.Entry(root, width=15, font=("Arial", "14"))
+        self.username_entry = tk.Entry(root, width=15, font=("Arial", "14"))
+        self.password_entry = tk.Entry(root, width=15, font=("Arial", "14"))
+        self.function_entry = tk.Entry(root, width=15, font=("Arial", "14"))
+
+        # Widgets rendering
+
+        first_name_label.place(x=5, y=10)
+        last_name_label.place(x=5, y=50)
+        username_label.place(x=5, y=90)
+        password_label.place(x=7, y=130)
+        function_label.place(x=10, y=170)
+
+        self.first_name_entry.place(x=110, y=12)
+        self.last_name_entry.place(x=110, y=52)
+        self.username_entry.place(x=110, y=92)
+        self.password_entry.place(x=110, y=132)
+        self.function_entry.place(x=110, y=172)
+
+        root.mainloop()
+
+    def register_user_function(self):
+        first_name = self.first_name_entry.get()
+        last_name = self.last_name_entry.get()
+        username = self.username_entry.get()
+        password = self.password_entry.get()
+        function = self.function_entry.get()
+
+        login_sequence.signup_func(username=username,
+                                   password=password,
+                                   first_name=first_name,
+                                   last_name=last_name,
+                                   function=function)
+
+        self.root.destroy()
+
+    def clear_btn_func(self):
+        self.first_name_entry.delete(0, 'end')
+        self.last_name_entry.delete(0, 'end')
+        self.username_entry.delete(0, 'end')
+        self.password_entry.delete(0, 'end')
+        self.function_entry.delete(0, 'end')
 
     def delete_user(self):
         pass
@@ -835,7 +914,8 @@ class LoginWindow:
 if __name__ == "__main__":
 
     # LoginWindow()
-    PartsManager()
+    # PartsManager()
+    AdminWindow()
 
     # deletes everything from the json file
     data = {}

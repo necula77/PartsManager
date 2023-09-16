@@ -27,14 +27,17 @@ def get_config(file):
         exit()
 
 
-def login_func(username, password, config):
+CONFIG = get_config("config.json")
+
+
+def login_func(username, password, config=CONFIG):
     # status = None
 
     try:
 
         with ps.connect(**config) as conn:
             with conn.cursor() as cursor:
-                sql_query = f"""SELECT first_name, last_name, authorization_level FROM "Authorization"."LOGIN_INFO"
+                sql_query = f"""SELECT first_name, last_name, function FROM "Authorization"."LOGIN_INFO"
                                 WHERE username = '{username}' AND password = '{password}';"""
 
                 cursor.execute(sql_query)
@@ -56,7 +59,7 @@ def login_func(username, password, config):
         exit()
 
 
-def signup_func(username, password, first_name, last_name, function, authorization_level, config):
+def signup_func(username, password, first_name, last_name, function, config=CONFIG):
 
     try:
 
@@ -64,9 +67,9 @@ def signup_func(username, password, first_name, last_name, function, authorizati
             with conn.cursor() as cursor:
 
                 sql_query = f"""INSERT INTO "Authorization"."LOGIN_INFO"(first_name, last_name, username, password,
-                                "function", authorization_level, starting_date)
-                                VALUES('{first_name}', '{last_name}', crypt('{username}', gen_salt('bf')), '{password}',
-                                 '{function}', '{authorization_level}', CURRENT_DATE);"""
+                                "function", starting_date)
+                                VALUES('{first_name}', '{last_name}', '{username}', '{password}',
+                                 '{function}', CURRENT_DATE);"""
 
                 cursor.execute(sql_query)
                 conn.commit()
