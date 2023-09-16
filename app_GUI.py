@@ -72,7 +72,7 @@ class PartsManager:
         # self.win.state("zoomed")
 
         # NU POATE FI MINIMIZATA SAU MAXIMIZATA APLICATIA
-        # self.win.resizable(False, False)
+        self.win.resizable(False, False)
 
         # pt full screen
         # self.width = self.win.winfo_screenwidth()
@@ -139,6 +139,12 @@ class PartsManager:
         # self.add_table_row_button.grid(row=2, column=6, pady=40, sticky="ne")
         self.add_table_row_button.configure(borderwidth=1, font='Calibri 12 bold')
 
+        self.admin_panel_button = tk.Button(self.win,
+                                            text="Admin Panel",
+                                            command=AdminWindow)
+
+        self.admin_panel_button.configure(borderwidth=1, font='Calibri 12 bold')
+
         # Buttons rendering
 
         # self.auto_details_button.place(x=10, y=30)
@@ -154,9 +160,12 @@ class PartsManager:
         self.add_part_to_db_button.place(x=615, y=335)
         self.clear_table_button.place(x=620, y=60)
         self.add_table_row_button.place(x=630, y=115)
+        self.admin_panel_button.place(x=430, y=30)
 
         # widgets declaration
 
+        self.conn_user_label = tk.Label(self.win, text="Connected user:", font=("Source Code Pro", "14"))
+        self.username_label = tk.Label(self.win, text=USERNAME, font=("Source Code Pro", "14"), fg="#00FF00")
         self.part_name_label = tk.Label(self.win, text="Part Name", font=("Source Code Pro", "14"))
         self.part_number_label = tk.Label(self.win, text="Part Number", font=("Source Code Pro", "14"))
         self.stock_label = tk.Label(self.win, text="Stock", font=("Source Code Pro", "14"))
@@ -167,6 +176,8 @@ class PartsManager:
 
         # widgets rendering
 
+        self.conn_user_label.place(x=75, y=30)
+        self.username_label.place(x=220, y=30)
         self.part_name_label.place(x=135, y=90)
         self.part_number_label.place(x=5, y=90)
         self.stock_label.place(x=270, y=90)
@@ -690,6 +701,65 @@ class AutoDetails:
         self.model_entry.delete(0, 'end')
         self.year_entry.delete(0, 'end')
         self.fuel_type_entry.delete(0, 'end')
+
+
+class AdminWindow:
+
+    def __init__(self):
+        self.root = tk.Tk()
+        self.root.title("Admin panel")
+        self.root.geometry("250x300")
+        center_window(self.root)
+
+        # Buttons declarations
+
+        self.register_user_button = tk.Button(self.root,
+                                              text="Regiser user",
+                                              command=self.register_user)
+        self.register_user_button.configure(borderwidth=1, font='Calibri 12 bold')
+
+        self.delete_user_button = tk.Button(self.root,
+                                            text="Delete user",
+                                            command=self.delete_user)
+        self.delete_user_button.configure(borderwidth=1, font='Calibri 12 bold')
+
+        self.update_user_login_info_button = tk.Button(self.root,
+                                                       text="Update user login info",
+                                                       command=self.update_user_login_info)
+
+        self.delete_car_button = tk.Button(self.root,
+                                           text="Delete car information",
+                                           command=self.delete_car_information)
+        self.delete_car_button.configure(borderwidth=1, font='Calibri 12 bold')
+
+        # Buttons rendering
+
+        self.register_user_button.place(x=50, y=50)
+        self.delete_user_button.place(x=50, y=100)
+        self.update_user_login_info_button.place(x=50, y=150)
+        self.delete_car_button.place(x=50, y=200)
+
+        # Widgets declarations
+
+
+
+        # Widgets rendering
+
+
+
+        self.root.mainloop()
+
+    def register_user(self):
+        pass
+
+    def delete_user(self):
+        pass
+
+    def delete_car_information(self):
+        pass
+
+    def update_user_login_info(self):
+        pass
 
 
 class LoginWindow:

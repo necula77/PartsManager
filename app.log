@@ -29,3 +29,10 @@ LINE 3:                             "KW" = '',
 
 16-Sep-2023 12:59:23 - INFO - DB_actions.py - 46 - User  a accesat baza de date pentru a modifica datele masinii: B24AEN, WF04XXWPD46R72874.
 16-Sep-2023 13:00:41 - INFO - DB_actions.py - 46 - User  a accesat baza de date pentru a modifica datele masinii: B51TSV, WNUSFJ12U3N445556.
+16-Sep-2023 14:11:30 - INFO - login_sequence.py - 50 - Utilizatorul necula77 s-a logat cu succes.
+16-Sep-2023 14:11:51 - INFO - login_sequence.py - 50 - Utilizatorul necula77 s-a logat cu succes.
+16-Sep-2023 14:12:02 - INFO - login_sequence.py - 50 - Utilizatorul necula77 s-a logat cu succes.
+16-Sep-2023 14:12:14 - INFO - login_sequence.py - 50 - Utilizatorul necula77 s-a logat cu succes.
+16-Sep-2023 14:12:23 - INFO - login_sequence.py - 50 - Utilizatorul necula77 s-a logat cu succes.
+16-Sep-2023 14:12:34 - INFO - login_sequence.py - 50 - Utilizatorul necula77 s-a logat cu succes.
+16-Sep-2023 14:13:15 - INFO - login_sequence.py - 50 - Utilizatorul sefu s-a logat cu succes.
