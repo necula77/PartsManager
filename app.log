@@ -78,3 +78,53 @@ DETAIL:  Failing row contains (6, , , , , , 2023-09-16).
 16-Sep-2023 18:44:49 - ERROR - login_sequence.py - 80 - Username-ul: diosf, exista deja, va rugam sa alegeti altul.
 16-Sep-2023 18:44:49 - ERROR - login_sequence.py - 80 - Username-ul: diosf, exista deja, va rugam sa alegeti altul.
 16-Sep-2023 18:45:12 - INFO - login_sequence.py - 76 - User: noknfdsa a fost adaugat in baza de date, NUME: kmidofs PRENUME: afskma.
+16-Sep-2023 19:52:05 - ERROR - login_sequence.py - 85 - Eroare la inregistrare: new row for relation "LOGIN_INFO" violates check constraint "LOGIN_INFO_function_check"
+DETAIL:  Failing row contains (21, , , , , , 2023-09-16).
+
+16-Sep-2023 19:55:38 - ERROR - login_sequence.py - 84 - s
+16-Sep-2023 19:55:46 - ERROR - login_sequence.py - 84 - s
+16-Sep-2023 19:56:04 - ERROR - login_sequence.py - 84 - new row for relation "LOGIN_INFO" violates check constraint "LOGIN_INFO_function_check"
+DETAIL:  Failing row contains (25, sad, asfcas, das, das, asc, 2023-09-16).
+
+16-Sep-2023 19:56:15 - INFO - login_sequence.py - 76 - User:  a fost adaugat in baza de date, NUME:  PRENUME: .
+16-Sep-2023 19:59:14 - ERROR - login_sequence.py - 84 - new row for relation "LOGIN_INFO" violates check constraint "LOGIN_INFO_function_check"
+DETAIL:  Failing row contains (27, , , , , , 2023-09-16).
+
+16-Sep-2023 20:01:13 - ERROR - login_sequence.py - 84 - new row for relation "LOGIN_INFO" violates check constraint "LOGIN_INFO_function_check"
+DETAIL:  Failing row contains (28, , , , , , 2023-09-16).
+
+16-Sep-2023 20:01:41 - ERROR - login_sequence.py - 84 - Campurile nu au fost completate corect!
+16-Sep-2023 20:03:47 - INFO - login_sequence.py - 76 - User: sdf a fost adaugat in baza de date, NUME: sdfc PRENUME: asdfsdfvadfgdsagvwaefsvdsafvsdafv.
+16-Sep-2023 20:08:17 - INFO - login_sequence.py - 76 - User: asd a fost adaugat in baza de date, NUME: asd PRENUME: asfceafaewgfvafgvdsfvdsfdsfvs.
+16-Sep-2023 20:08:58 - ERROR - login_sequence.py - 84 - Campurile nu au fost completate corect!
+16-Sep-2023 20:09:01 - ERROR - login_sequence.py - 84 - Campurile nu au fost completate corect!
+16-Sep-2023 20:09:21 - ERROR - login_sequence.py - 84 - Campurile nu au fost completate corect!
+16-Sep-2023 20:09:22 - ERROR - login_sequence.py - 84 - Campurile nu au fost completate corect!
+17-Sep-2023 18:15:16 - ERROR - login_sequence.py - 84 - Campurile nu au fost completate corect!
+17-Sep-2023 18:15:23 - INFO - login_sequence.py - 76 - User: adc a fost adaugat in baza de date, NUME: awd PRENUME: sada.
+17-Sep-2023 18:28:26 - INFO - login_sequence.py - 53 - Utilizatorul necula77 s-a logat cu succes.
+17-Sep-2023 19:23:20 - INFO - login_sequence.py - 143 - User: 4 a fost editat in baza de date,
+                         NUME: Mircea PRENUME: Andrei USERNAME: sefu.
+17-Sep-2023 19:25:52 - INFO - login_sequence.py - 143 - User: 4 a fost editat in baza de date,
+                         NUME: Andrei PRENUME: Mircea USERNAME: sefu.
+17-Sep-2023 19:27:51 - INFO - login_sequence.py - 143 - User: 4 a fost editat in baza de date,
+                         NUME: Mircea PRENUME: Andrei USERNAME: sefu.
+17-Sep-2023 19:29:33 - INFO - login_sequence.py - 143 - User: 4 a fost editat in baza de date,
+                         NUME: Andrei PRENUME: Mircea USERNAME: sefu.
+17-Sep-2023 19:30:27 - INFO - login_sequence.py - 143 - User: 4 a fost editat in baza de date,
+                         NUME: Andrei PRENUME: Mircea USERNAME: sefu.
+17-Sep-2023 19:41:28 - ERROR - login_sequence.py - 149 - Username-ul: necula77, exista deja, va rugam sa alegeti altul.
+17-Sep-2023 19:41:51 - INFO - login_sequence.py - 143 - User: 38 a fost editat in baza de date,
+                         NUME: Mircea PRENUME: Andrei USERNAME: sefu.
+17-Sep-2023 21:39:01 - INFO - login_sequence.py - 76 - User: sefu a fost adaugat in baza de date, NUME: Andrei PRENUME: Mircea.
+17-Sep-2023 21:44:52 - INFO - login_sequence.py - 76 - User: sefu a fost adaugat in baza de date, NUME: Andrei PRENUME: Mircea.
+17-Sep-2023 21:46:24 - INFO - login_sequence.py - 76 - User: sefu a fost adaugat in baza de date, NUME: Andrei PRENUME: Mircea.
+17-Sep-2023 21:46:50 - INFO - login_sequence.py - 152 - User: 41 a fost editat in baza de date,
+                         NUME: Mihaela PRENUME: Andreea USERNAME: sefu.
+17-Sep-2023 21:47:18 - ERROR - login_sequence.py - 158 - Username-ul: necula77, exista deja, va rugam sa alegeti altul.
+17-Sep-2023 21:47:21 - ERROR - login_sequence.py - 158 - Username-ul: necula77, exista deja, va rugam sa alegeti altul.
+17-Sep-2023 21:47:43 - ERROR - login_sequence.py - 158 - Username-ul: necula77, exista deja, va rugam sa alegeti altul.
+17-Sep-2023 21:48:05 - INFO - login_sequence.py - 154 - User: 41 a fost editat in baza de date,
+                         NUME: Mihaela PRENUME: Andreea USERNAME: sefu.
+17-Sep-2023 21:48:24 - ERROR - login_sequence.py - 160 - Username-ul: necula77, exista deja, va rugam sa alegeti altul.
+17-Sep-2023 22:06:48 - INFO - login_sequence.py - 53 - Utilizatorul necula77 s-a logat cu succes.

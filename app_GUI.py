@@ -719,7 +719,7 @@ class AdminWindow:
 
         self.register_user_button = tk.Button(self.root,
                                               text="Regiser user",
-                                              command=lambda:[self.register_user_window, self.root.destroy])
+                                              command=self.register_user_window)
         self.register_user_button.configure(borderwidth=1, font='Calibri 12 bold')
 
         self.delete_user_button = tk.Button(self.root,
@@ -746,11 +746,7 @@ class AdminWindow:
 
         # Widgets declarations
 
-
-
         # Widgets rendering
-
-
 
         self.root.mainloop()
 
@@ -816,13 +812,15 @@ class AdminWindow:
         password = self.password_entry.get()
         function = self.function_entry.get()
 
-        login_sequence.signup_func(username=username,
-                                   password=password,
-                                   first_name=first_name,
-                                   last_name=last_name,
-                                   function=function)
+        if first_name == '' or last_name == '' or username == '' or password == '' or function == '':
+            tk.messagebox.showerror(title="Error", message="All fields must be completed!")
+            self.root.destroy()
 
-        self.root.destroy()
+        status = login_sequence.signup_func(username=username,
+                                            password=password,
+                                            first_name=first_name,
+                                            last_name=last_name,
+                                            function=function)
 
     def clear_btn_func(self):
         self.first_name_entry.delete(0, 'end')
@@ -832,14 +830,223 @@ class AdminWindow:
         self.function_entry.delete(0, 'end')
 
     def delete_user(self):
-        pass
+        self.root = tk.Tk()
+        self.root.title("Delete user")
+        self.root.geometry("380x150")
+        center_window(self.root)
+        self.root.resizable(False, False)
+        # Buttons declarations
 
-    def delete_car_information(self):
-        pass
+        delete_button = tk.Button(self.root,
+                                  text="Delete",
+                                  command=self.delete_btn_func)
+        delete_button.configure(borderwidth=1, font='Calibri 12 bold')
+
+        # Buttons rendering
+
+        delete_button.place(x=300, y=50)
+
+        # Widgets declarations
+
+        username_label = tk.Label(self.root, text="Username:", font=("Arial", "14"))
+        first_name_label = tk.Label(self.root, text="First name:", font=("Arial", "14"))
+        last_name_label = tk.Label(self.root, text="Last name:", font=("Arial", "14"))
+
+        self.username_entry = tk.Entry(self.root, width=15, font=("Arial", "14"))
+        self.first_name_entry = tk.Entry(self.root, width=15, font=("Arial", "14"))
+        self.last_name_entry = tk.Entry(self.root, width=15, font=("Arial", "14"))
+
+        # Widgets rendering
+
+        username_label.place(x=5, y=10)
+        first_name_label.place(x=5, y=50)
+        last_name_label.place(x=5, y=90)
+
+        self.username_entry.place(x=110, y=12)
+        self.first_name_entry.place(x=110, y=52)
+        self.last_name_entry.place(x=110, y=92)
+
+        self.root.mainloop()
+
+    def delete_btn_func(self):
+
+        username = self.username_entry.get()
+        first_name = self.first_name_entry.get()
+        last_name = self.last_name_entry.get()
+
+        question = tk.messagebox.askokcancel(title="Confirmation", message=f"Are you sure that you want to delete"
+                                                                           f" '{username}' from the database?")
+
+        if question is True:
+            status = login_sequence.delete_user(username=username,
+                                   first_name=first_name,
+                                   last_name=last_name)
+            if status is True:
+                tk.messagebox.showinfo(title="Succes", message=f"User: {username} has been deleted.")
+            else:
+                tk.messagebox.showerror(title="Fail", message="User could not be deleted.")
+
+            self.root.destroy()
+
+        else:
+            self.root.destroy()
 
     def update_user_login_info(self):
-        pass
+        self.win = tk.Tk()
+        self.win.title("Insert username")
+        self.win.geometry("300x100")
+        center_window(self.win)
+        self.win.resizable(False,False)
 
+        username_label = tk.Label(self.win, text="Username:", font=("Arial", "14"))
+        self.username_entry = tk.Entry(self.win, width=15, font=("Arial", "14"))
+
+        username_label.place(x=5, y=20)
+        self.username_entry.place(x=105, y=22)
+
+        check_button = tk.Button(self.win,
+                                 text="Check",
+                                 command=self.check_btn_func)
+        check_button.configure(borderwidth=1, font='Calibri 12 bold')
+
+        check_button.place(x=150, y=55)
+
+    def check_btn_func(self):
+        username = self.username_entry.get()
+
+        self.data = login_sequence.verify_if_user_exists(username=username)
+
+        if self.data:
+            self.win.destroy()
+
+            self.root = tk.Tk()
+            self.root.title("Update user information")
+            self.root.geometry("400x300")
+            center_window(self.root)
+            self.root.resizable(False, False)
+
+            # Buttons declarations
+
+            update_button = tk.Button(self.root,
+                                      text="Update",
+                                      command=self.update_btn_func)
+            update_button.configure(borderwidth=1, font='Calibri 12 bold')
+
+            # Buttons rendering
+
+            update_button.place(x=155, y=210)
+
+            # Widgets declarations
+
+            first_name_label = tk.Label(self.root, text="First name:", font=("Arial", "14"))
+            last_name_label = tk.Label(self.root, text="Last name:", font=("Arial", "14"))
+            username_label = tk.Label(self.root, text="Username:", font=("Arial", "14"))
+            password_label = tk.Label(self.root, text="Password:", font=("Arial", "14"))
+            function_label = tk.Label(self.root, text="Function:", font=("Arial", "14"))
+
+            self.first_name_entry = tk.Entry(self.root, width=15, font=("Arial", "14"))
+            self.last_name_entry = tk.Entry(self.root, width=15, font=("Arial", "14"))
+            self.username_entry = tk.Entry(self.root, width=15, font=("Arial", "14"))
+            self.password_entry = tk.Entry(self.root, width=15, font=("Arial", "14"))
+            self.function_entry = tk.Entry(self.root, width=15, font=("Arial", "14"))
+
+            # Widgets rendering
+
+            first_name_label.place(x=5, y=10)
+            last_name_label.place(x=5, y=50)
+            username_label.place(x=5, y=90)
+            password_label.place(x=7, y=130)
+            function_label.place(x=10, y=170)
+
+            self.first_name_entry.place(x=110, y=12)
+            self.last_name_entry.place(x=110, y=52)
+            self.username_entry.place(x=110, y=92)
+            self.password_entry.place(x=110, y=132)
+            self.function_entry.place(x=110, y=172)
+
+            self.root.mainloop()
+
+    def update_btn_func(self):
+
+        user_id = self.data[0]
+        first_name = self.first_name_entry.get()
+        last_name = self.last_name_entry.get()
+        username = self.username_entry.get()
+        password = self.password_entry.get()
+        function = self.function_entry.get()
+
+        status = login_sequence.edit_user_info(user_id=user_id,
+                                      first_name=first_name,
+                                      last_name=last_name,
+                                      new_username=username,
+                                      password=password,
+                                      function=function)
+        if status is True:
+            tk.messagebox.showinfo(title="Succes", message=f"User: {user_id} has been modified in the database, LAST "
+                                                           f"NAME: {last_name}, FIRST NAME: {first_name}, USERNAME: {username}.")
+        else:
+            tk.messagebox.showerror(title="Fail", message="User could not be edited.")
+
+        self.root.destroy()
+
+    def delete_car_information(self):
+        self.root = tk.Tk()
+        self.root.title("Delete car information")
+        self.root.geometry("350x100")
+        center_window(self.root)
+        self.root.resizable(False, False)
+
+        # Buttons declarations
+
+        delete_button = tk.Button(self.root,
+                                  text="Delete",
+                                  width=10,
+                                  command=self.delete_car_info_btn)
+        delete_button.configure(borderwidth=1, font='Calibri 10 bold')
+
+        # Buttons rendering
+
+        delete_button.place(x=250, y=52)
+
+        # Widgets declarations
+
+        vin_label = tk.Label(self.root, text="VIN:", font=("Arial", "14"))
+        l_plate_label = tk.Label(self.root, text="License plate:", font=("Arial", "14"))
+
+        self.vin_entry = tk.Entry(self.root, width=25, font=("Arial", "14"))
+        self.l_plate_entry = tk.Entry(self.root, width=10, font=("Arial", "14"))
+
+        # Widgets rendering
+
+        vin_label.place(x=5, y=20)
+        l_plate_label.place(x=5, y=50)
+
+        self.vin_entry.place(x=50, y=22)
+        self.l_plate_entry.place(x=130, y=52)
+
+        self.root.mainloop()
+
+    def delete_car_info_btn(self):
+
+        vin = self.vin_entry.get()
+        plate = self.l_plate_entry.get()
+
+        question = tk.messagebox.askyesno(title="Are you sure?", message="Are you sure that you want to delete"
+                                                                         "this car's info from the database?")
+
+        if question is True:
+
+            status = DB_actions.delete_car_info(vin=vin,
+                                                license_plate=plate)
+
+            if status is True:
+                tk.messagebox.showinfo(title="Succes", message="The car's info was deleted sucesfully!")
+            else:
+                tk.messagebox.showerror(title="Error", message="The car's info could not be deleted!")
+
+            self.root.destroy()
+        else:
+            self.root.destroy()
 
 class LoginWindow:
 
@@ -913,9 +1120,9 @@ class LoginWindow:
 
 if __name__ == "__main__":
 
-    # LoginWindow()
+    LoginWindow()
     # PartsManager()
-    AdminWindow()
+    # AdminWindow()
 
     # deletes everything from the json file
     data = {}
