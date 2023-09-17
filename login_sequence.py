@@ -56,10 +56,9 @@ def login_func(username, password, config=CONFIG):
 
     except Exception as e:
         logging.error(f"Eroare la autentificare: {e}")
-        exit()
 
 
-def signup_func(username, password, first_name, last_name, function, config=CONFIG):
+def signup_func(username, password, first_name, last_name, function,  config=CONFIG):
 
     try:
 
@@ -80,10 +79,96 @@ def signup_func(username, password, first_name, last_name, function, config=CONF
         logging.error(f"Username-ul: {username}, exista deja, va rugam sa alegeti altul.")
         conn.rollback()
 
-    except Exception as e:
+    except pserrors.CheckViolation as e:
+        logging.error(f"Campurile nu au fost completate corect!")
 
+    except pserrors.StringDataRightTruncation as e:
+        logging.error(f"Una dintre valorile introduse este prea lunga!")
+
+    except Exception as e:
+        pserrors.lookup(e)
         logging.error(f"Eroare la inregistrare: {e}")
-        exit()
+
+
+def delete_user(username, first_name, last_name, config=CONFIG):
+    status = False
+
+    try:
+        with ps.connect(**config) as conn:
+            with conn.cursor() as cursor:
+
+                sql_query = f"""DELETE FROM "Authorization"."LOGIN_INFO"
+                                WHERE "username" = '{username}' AND "first_name" = '{first_name}'
+                                 AND "last_name" = '{last_name}';"""
+
+                cursor.execute(sql_query)
+                if cursor.rowcount > 0:
+                    status = True
+                else:
+                    status = False
+
+    except Exception as e:
+        print(e)
+
+    return status
+
+
+def verify_if_user_exists(username, config=CONFIG):
+    try:
+        with ps.connect(**config) as conn:
+            with conn.cursor() as cursor:
+
+                sql_query = f"""SELECT "user_id" FROM "Authorization"."LOGIN_INFO"
+                                WHERE "username"='{username}';"""
+
+                cursor.execute(sql_query)
+                data = cursor.fetchone()
+
+                return data
+
+    except Exception as e:
+        print(e)
+
+
+def edit_user_info(user_id, new_username, password, first_name, last_name, function,  config=CONFIG):
+    status = False
+
+    try:
+
+        with ps.connect(**config) as conn:
+            with conn.cursor() as cursor:
+
+                sql_query = f"""UPDATE "Authorization"."LOGIN_INFO"
+                                SET "username" = '{new_username}', "password" = '{password}', function = '{function}',
+                                "first_name" = '{first_name}', "last_name" = '{last_name}'
+                                WHERE "user_id" = '{user_id}';"""
+
+                cursor.execute(sql_query)
+                conn.commit()
+                if cursor.rowcount > 0:
+                    status = True
+                else:
+                    status = False
+
+        logging.info(f"""User: {user_id} a fost editat in baza de date,
+                         NUME: {last_name} PRENUME: {first_name} USERNAME: {new_username}.""")
+
+    except pserrors.UniqueViolation:
+
+        logging.error(f"Username-ul: {new_username}, exista deja, va rugam sa alegeti altul.")
+        conn.rollback()
+
+    except pserrors.CheckViolation as e:
+        logging.error(f"Campurile nu au fost completate corect!")
+
+    except pserrors.StringDataRightTruncation as e:
+        logging.error(f"Una dintre valorile introduse este prea lunga!")
+
+    except Exception as e:
+        pserrors.lookup(e)
+        logging.error(f"Eroare la inregistrare: {e}")
+
+    return status
 
 
 config = get_config("config.json")

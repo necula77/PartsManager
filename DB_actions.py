@@ -202,5 +202,22 @@ def check_for_car(vin, license_plate, config=CONFIG):
     else:
         return True
 
+
+def delete_car_info(vin, license_plate, config=CONFIG):
+
+    with ps.connect(**config) as conn:
+        with conn.cursor() as cursor:
+
+            sql_query = f"""DELETE FROM "Auto_Details"."REGISTERED_CARS"
+                            WHERE "VIN" = '{vin}' OR "License Plate" = '{license_plate}';"""
+
+            cursor.execute(sql_query)
+            if cursor.rowcount > 0:
+                status = True
+            else:
+                status = False
+
+    return status
+
 # if __name__ == '__main__':
 #     register_part("0102C-13256", "Electromotor", 3, "A-12", 780.7, "necula77")
