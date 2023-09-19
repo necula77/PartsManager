@@ -4,6 +4,8 @@ import psycopg2 as ps
 import psycopg2.errors
 from psycopg2 import errors as pserrors
 from psycopg2.extras import RealDictCursor
+import tkinter as tk
+from tkinter import messagebox
 
 LOGGER = logging.getLogger(__name__)
 
@@ -203,7 +205,7 @@ def check_for_car(vin, license_plate, config=CONFIG):
         return True
 
 
-def delete_car_info(vin, license_plate, config=CONFIG):
+def delete_car_info(vin, license_plate, logged_user, config=CONFIG):
 
     with ps.connect(**config) as conn:
         with conn.cursor() as cursor:
@@ -213,11 +215,10 @@ def delete_car_info(vin, license_plate, config=CONFIG):
 
             cursor.execute(sql_query)
             if cursor.rowcount > 0:
-                status = True
+                tk.messagebox.showinfo(title="Succes", message="The car's info was deleted sucesfully!")
             else:
-                status = False
+                tk.messagebox.showerror(title="Error", message="The car's info could not be deleted!")
 
-    return status
 
 # if __name__ == '__main__':
 #     register_part("0102C-13256", "Electromotor", 3, "A-12", 780.7, "necula77")

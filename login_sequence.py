@@ -2,6 +2,8 @@ import json
 import logging
 import psycopg2 as ps
 from psycopg2 import errors as pserrors
+import tkinter as tk
+from tkinter import messagebox
 
 
 LOGGER = logging.getLogger(__name__)
@@ -58,7 +60,7 @@ def login_func(username, password, config=CONFIG):
         logging.error(f"Eroare la autentificare: {e}")
 
 
-def signup_func(username, password, first_name, last_name, function,  config=CONFIG):
+def signup_func(username, password, first_name, last_name, function, logged_user,  config=CONFIG):
 
     try:
 
@@ -72,7 +74,8 @@ def signup_func(username, password, first_name, last_name, function,  config=CON
 
                 cursor.execute(sql_query)
                 conn.commit()
-        logging.info(f"User: {username} a fost adaugat in baza de date, NUME: {last_name} PRENUME: {first_name}.")
+        logging.info(f"User: {username}, NUME: {last_name} PRENUME: {first_name}"
+                     f" a fost adaugat in baza de date de catre '{logged_user}'.")
 
     except pserrors.UniqueViolation:
 
@@ -90,8 +93,7 @@ def signup_func(username, password, first_name, last_name, function,  config=CON
         logging.error(f"Eroare la inregistrare: {e}")
 
 
-def delete_user(username, first_name, last_name, config=CONFIG):
-    status = False
+def delete_user(username, first_name, last_name, logged_user, config=CONFIG):
 
     try:
         with ps.connect(**config) as conn:
@@ -104,13 +106,13 @@ def delete_user(username, first_name, last_name, config=CONFIG):
                 cursor.execute(sql_query)
                 if cursor.rowcount > 0:
                     status = True
+                    tk.messagebox.showinfo(title="Succes", message=f"User: {username} has been deleted.")
                 else:
+                    tk.messagebox.showerror(title="Fail", message="User could not be deleted.")
                     status = False
 
     except Exception as e:
         print(e)
-
-    return status
 
 
 def verify_if_user_exists(username, config=CONFIG):
@@ -130,8 +132,7 @@ def verify_if_user_exists(username, config=CONFIG):
         print(e)
 
 
-def edit_user_info(user_id, new_username, password, first_name, last_name, function,  config=CONFIG):
-    status = False
+def edit_user_info(user_id, new_username, password, first_name, last_name, function, logged_user, config=CONFIG):
 
     try:
 
@@ -146,12 +147,14 @@ def edit_user_info(user_id, new_username, password, first_name, last_name, funct
                 cursor.execute(sql_query)
                 conn.commit()
                 if cursor.rowcount > 0:
-                    status = True
+                    tk.messagebox.showinfo(title="Succes",
+                                           message=f"User: {user_id} has been modified in the database, LAST "
+                                                   f"NAME: {last_name}, FIRST NAME: {first_name}, USERNAME: {new_username}.")
                 else:
-                    status = False
+                    tk.messagebox.showerror(title="Fail", message="User could not be edited.")
 
-        logging.info(f"""User: {user_id} a fost editat in baza de date,
-                         NUME: {last_name} PRENUME: {first_name} USERNAME: {new_username}.""")
+        logging.info(f"""User: {user_id},NUME: {last_name} PRENUME: {first_name} USERNAME: {new_username}
+                          a fost editat in baza de date de catre '{logged_user}'.""")
 
     except pserrors.UniqueViolation:
 
@@ -167,8 +170,6 @@ def edit_user_info(user_id, new_username, password, first_name, last_name, funct
     except Exception as e:
         pserrors.lookup(e)
         logging.error(f"Eroare la inregistrare: {e}")
-
-    return status
 
 
 config = get_config("config.json")
