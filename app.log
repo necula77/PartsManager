@@ -128,3 +128,45 @@ DETAIL:  Failing row contains (28, , , , , , 2023-09-16).
                          NUME: Mihaela PRENUME: Andreea USERNAME: sefu.
 17-Sep-2023 21:48:24 - ERROR - login_sequence.py - 160 - Username-ul: necula77, exista deja, va rugam sa alegeti altul.
 17-Sep-2023 22:06:48 - INFO - login_sequence.py - 53 - Utilizatorul necula77 s-a logat cu succes.
+17-Sep-2023 22:09:20 - INFO - login_sequence.py - 53 - Utilizatorul necula77 s-a logat cu succes.
+17-Sep-2023 22:11:13 - INFO - login_sequence.py - 75 - User: bossu a fost adaugat in baza de date, NUME: Andrei PRENUME: Mircea.
+17-Sep-2023 22:14:21 - INFO - login_sequence.py - 53 - Utilizatorul necula77 s-a logat cu succes.
+17-Sep-2023 22:16:21 - INFO - login_sequence.py - 53 - Utilizatorul necula77 s-a logat cu succes.
+17-Sep-2023 22:16:33 - INFO - login_sequence.py - 75 - User: patronu, NUME: Mihai PRENUME: Mircica a fost adaugat in baza de date de catre 'necula77'.
+17-Sep-2023 22:17:27 - INFO - login_sequence.py - 154 - User: 41,NUME: Mihaela PRENUME: Andreea USERNAME: sefu
+                          a fost editat in baza de date de catre 'necula77'.
+18-Sep-2023 18:54:08 - INFO - login_sequence.py - 53 - Utilizatorul necula77 s-a logat cu succes.
+18-Sep-2023 19:14:02 - INFO - login_sequence.py - 53 - Utilizatorul necula77 s-a logat cu succes.
+18-Sep-2023 19:14:51 - INFO - login_sequence.py - 53 - Utilizatorul necula77 s-a logat cu succes.
+18-Sep-2023 19:16:46 - INFO - login_sequence.py - 53 - Utilizatorul necula77 s-a logat cu succes.
+18-Sep-2023 19:17:31 - INFO - login_sequence.py - 53 - Utilizatorul necula77 s-a logat cu succes.
+18-Sep-2023 19:19:33 - INFO - login_sequence.py - 53 - Utilizatorul necula77 s-a logat cu succes.
+18-Sep-2023 19:19:47 - INFO - login_sequence.py - 53 - Utilizatorul necula77 s-a logat cu succes.
+18-Sep-2023 19:20:14 - INFO - login_sequence.py - 53 - Utilizatorul necula77 s-a logat cu succes.
+18-Sep-2023 19:20:33 - INFO - login_sequence.py - 53 - Utilizatorul necula77 s-a logat cu succes.
+18-Sep-2023 19:23:58 - INFO - login_sequence.py - 55 - Utilizatorul necula77 s-a logat cu succes.
+18-Sep-2023 19:24:50 - INFO - login_sequence.py - 55 - Utilizatorul necula77 s-a logat cu succes.
+18-Sep-2023 19:39:29 - INFO - login_sequence.py - 55 - Utilizatorul necula77 s-a logat cu succes.
+18-Sep-2023 19:49:30 - INFO - login_sequence.py - 55 - Utilizatorul necula77 s-a logat cu succes.
+18-Sep-2023 19:50:07 - INFO - login_sequence.py - 55 - Utilizatorul necula77 s-a logat cu succes.
+18-Sep-2023 19:56:06 - INFO - login_sequence.py - 55 - Utilizatorul necula77 s-a logat cu succes.
+18-Sep-2023 19:56:55 - INFO - DB_actions.py - 154 - User necula77 a accesat baza de date
+                pentru a modifica stockul din depozit pentru 023B-14325, acesta fiind acum 30 bucati.
+18-Sep-2023 19:57:04 - INFO - DB_actions.py - 116 - User necula77 a accesat baza de date pentru a sterge piesa 023B-14325.
+18-Sep-2023 19:57:52 - INFO - DB_actions.py - 154 - User necula77 a accesat baza de date
+                pentru a modifica stockul din depozit pentru 023B-14325, acesta fiind acum 30 bucati.
+18-Sep-2023 19:58:16 - INFO - DB_actions.py - 48 - User necula77 a accesat baza de date pentru a modifica datele masinii: B77BWJ, TMBAJ7NEXH0162888.
+18-Sep-2023 19:58:48 - INFO - login_sequence.py - 77 - User: sefu, NUME: Mihaela PRENUME: Andreea a fost adaugat in baza de date de catre 'necula77'.
+18-Sep-2023 19:59:35 - INFO - login_sequence.py - 156 - User: 42,NUME: Mircea PRENUME: Andrei USERNAME: bosu
+                          a fost editat in baza de date de catre 'necula77'.
+19-Sep-2023 18:04:47 - INFO - login_sequence.py - 55 - Utilizatorul necula77 s-a logat cu succes.
+19-Sep-2023 18:23:17 - INFO - login_sequence.py - 55 - Utilizatorul necula77 s-a logat cu succes.
+19-Sep-2023 18:27:00 - INFO - login_sequence.py - 55 - Utilizatorul necula77 s-a logat cu succes.
+19-Sep-2023 18:29:23 - INFO - login_sequence.py - 55 - Utilizatorul necula77 s-a logat cu succes.
+19-Sep-2023 18:32:37 - INFO - login_sequence.py - 55 - Utilizatorul necula77 s-a logat cu succes.
+19-Sep-2023 18:32:57 - INFO - login_sequence.py - 55 - Utilizatorul necula77 s-a logat cu succes.
+19-Sep-2023 18:33:13 - INFO - login_sequence.py - 55 - Utilizatorul necula77 s-a logat cu succes.
+19-Sep-2023 18:33:29 - INFO - login_sequence.py - 55 - Utilizatorul necula77 s-a logat cu succes.
+19-Sep-2023 18:42:13 - INFO - login_sequence.py - 55 - Utilizatorul necula77 s-a logat cu succes.
+19-Sep-2023 18:44:31 - INFO - login_sequence.py - 55 - Utilizatorul necula77 s-a logat cu succes.
+19-Sep-2023 18:48:42 - INFO - login_sequence.py - 55 - Utilizatorul necula77 s-a logat cu succes.
