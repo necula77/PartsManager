@@ -12,8 +12,7 @@ import json
 import csv
 import datetime
 import os
-
-
+import aspose.words as aw
 
 USERNAME = ""
 
@@ -346,7 +345,10 @@ class PartsManager:
         webbrowser.open('https://web.tecalliance.net/tecdocsw/ro/login')
 
     def print_parts(self):
-
+        """
+        this function takes the parts information from the app's table and transfroms them into a csv file
+        :return:
+        """
         current_time = datetime.datetime.now().strftime("%Y-%m-%d+%H-%M-%S")
 
         with open("AutoDetails.json", "r") as f:
@@ -355,7 +357,7 @@ class PartsManager:
         vin = data["VIN"]
         km = data["KM"]
 
-        output_directory = "D://PartsManager//csv_files"
+        output_directory = "D://PartsManager//temp_files"
 
         csv_file = os.path.join(output_directory, f"parts_data_{vin}_{km}_{current_time}.csv")
 
@@ -377,11 +379,127 @@ class PartsManager:
         except Exception as e:
             messagebox.showerror("Error", f"Error saving data to {csv_file}: {str(e)}")
 
+        self.word_template(csv_file)
         self.write_in_docx_file(csv_file=csv_file)
 
-    def write_in_docx_file(self, csv_file):
-        pass
 
+    def write_in_docx_file(self, csv_file):
+        """
+        this function takes a csv file and transforms it into a docx file
+        :param csv_file:
+        :return:
+        """
+
+        with open("AutoDetails.json", "r") as f:
+            json_data = f.read()
+            data = json.loads(json_data)
+        vin = data["VIN"]
+        km = data["KM"]
+        current_time = datetime.datetime.now().strftime("%Y-%m-%d+%H-%M-%S")
+
+        doc = aw.Document()
+        builder = aw.DocumentBuilder(doc)
+
+        # Read data from the CSV file and add it to the Word document as a table
+        with open(csv_file, 'r') as file:
+            csv_data = csv.reader(file)
+            header = next(csv_data)  # Read the header row
+            table = builder.start_table()
+
+            # Add the header row to the table
+            for column_name in header:
+                builder.insert_cell()
+                builder.write(column_name)
+            builder.end_row()
+
+            # Add data rows to the table
+            for row in csv_data:
+                for cell_data in row:
+                    builder.insert_cell()
+                    builder.write(cell_data)
+                builder.end_row()
+
+            builder.end_table()
+
+
+        output_directory = "D://PartsManager//docx_files"
+        docx_file = os.path.join(output_directory, f"parts_data_{vin}_{km}_{current_time}.docx")
+
+        try:
+            # Save the Word document
+            doc.save(docx_file)
+            os.remove(csv_file)
+            os.chmod(docx_file, 0o444)
+        except Exception as e:
+            messagebox.showerror("Error", f"Error saving Word document to {docx_file}: {str(e)}")
+
+    def word_template(self, csv_file, car_info=None):
+
+        current_time = datetime.datetime.now().strftime("%Y-%m-%d+%H-%M-%S")
+
+        with open("AutoDetails.json", "r") as f:
+            json_data = f.read()
+            data = json.loads(json_data)
+        vin = data["VIN"]
+        km = data["KM"]
+
+        doc = aw.Document()
+        builder = aw.DocumentBuilder(doc)
+
+        if car_info:
+            # Add car information as paragraphs
+            builder.write("Parts bill")
+            builder.writeln()
+            builder.writeln()
+            builder.writeln("Auto details:")
+
+            for key, value in car_info.items():
+                builder.write(f"{key}: {value}")
+                builder.writeln()
+
+            builder.writeln()
+            builder.write("Asd\tSad\tFeas\tFewa\tFadwa")
+            builder.writeln()
+            builder.write("KW:")
+            builder.writeln()
+            builder.writeln()
+            builder.write("I HANDED,")
+            builder.writeln("\t\t\t\t\t\t\t\tI RECEIVED,")
+
+        # Read data from the CSV file and add it to the Word document as a table
+        with open(csv_file, 'r') as file:
+            csv_data = csv.reader(file)
+            header = next(csv_data)  # Read the header row
+            table = builder.start_table()
+
+            # Add the header row to the table
+            for column_name in header:
+                builder.insert_cell()
+                builder.write(column_name)
+            builder.end_row()
+
+            # Add data rows to the table
+            for row in csv_data:
+                for cell_data in row:
+                    builder.insert_cell()
+                    builder.write(cell_data)
+                builder.end_row()
+
+            builder.end_table()
+
+        # Define the path for the output Word document
+        output_directory = "D://PartsManager//docx_files"
+        docx_file = os.path.join(output_directory, f"parts_data_{vin}_{km}_{current_time}.docx")
+
+        try:
+            # Save the Word document
+            doc.save(docx_file)
+
+            # Set the read-only attribute for the Word document (Windows)
+            os.system(f"attrib +r {docx_file}")
+
+        except Exception as e:
+            messagebox.showerror("Error", f"Error saving Word document to {docx_file}: {str(e)}")
 
 class AdminWindow:
 
