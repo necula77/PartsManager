@@ -5,6 +5,7 @@ from tkinter import messagebox
 import pandas as pd
 import openpyxl
 import DB_actions
+import create_db
 import login_sequence
 import login_sequence as ls
 from login_sequence import config
@@ -45,11 +46,40 @@ def center_window(win):
     win.deiconify()
 
 
-def validate_input(P, max_char: int):
-    if int(len(P)) <= int(max_char):
+def validate_input(p, max_char: int):
+    """
+    checks if the input provided by the user is correct
+    :param p:
+    :param max_char:
+    :return:
+    """
+
+    if int(len(p)) <= int(max_char):
         return True
     else:
         return False
+
+
+def run_app():
+    """
+    this function runs the app
+    :return:
+    """
+
+    with open("app_config.json", 'r') as f:
+        config_data = json.load(f)
+
+    if config_data["first_app_open"] == "True":
+        create_db.create_data_base()
+        config_data["first_app_open"] = "False"
+        with open("app_config.json", 'w') as f:
+            json.dump(config_data, f, indent=4)
+
+    LoginWindow()
+
+    data = {}
+    with open("AutoDetails.json", 'w') as json_file:
+        json.dump(data, json_file, indent=4)
 
 
 class LoginWindow:
@@ -1188,10 +1218,4 @@ class RecieveShipment:
 
 if __name__ == "__main__":
 
-    LoginWindow()
-    # PartsManager()
-
-    # deletes everything from the json file
-    data = {}
-    with open("AutoDetails.json", 'w') as json_file:
-        json.dump(data, json_file, indent=4)
+    run_app()
