@@ -2,6 +2,8 @@ import tkinter as tk
 import webbrowser
 from tkinter import *
 from tkinter import messagebox
+import pandas as pd
+import openpyxl
 import DB_actions
 import login_sequence
 import login_sequence as ls
@@ -12,7 +14,6 @@ import json
 import csv
 import datetime
 import os
-import aspose.words as aw
 
 USERNAME = ""
 
@@ -111,14 +112,12 @@ class LoginWindow:
         # authorization_level = ls.login_func(username=self.username_entry.get(), password=self.password_entry.get(), config=config)[0]
         # self.status = authorization_level[1]
         if self.username_entry.get() and self.password_entry.get():
-            self.data, self.status, USERNAME = ls.login_func(username=self.username_entry.get(), password=self.password_entry.get(), config=config)
+            self.status, function, USERNAME = ls.login_func(username=self.username_entry.get(), password=self.password_entry.get(), config=config)
             if self.status is False:
                 messagebox.showerror(title="Fail Authenticator", message="Username-ul sau parola sunt gresite.")
             else:
                 self.root.destroy()
-                PartsManager()
-                # aici instantiez noua mea fereastra
-        # trebuie afisat ceva cand utilizatorul gresteste parola sau nu completeaza nimic
+                PartsManager(function)
 
 
 class PartsManager:
@@ -132,7 +131,7 @@ class PartsManager:
     starting_x = 5
     starting_y = 130
 
-    def __init__(self):
+    def __init__(self, function):
 
         self.win = tk.Tk()
         self.win.title("PartsManager")
@@ -212,16 +211,18 @@ class PartsManager:
         # self.add_table_row_button.grid(row=2, column=6, pady=40, sticky="ne")
         self.add_table_row_button.configure(borderwidth=1, font='Calibri 12 bold')
 
-        self.admin_panel_button = tk.Button(self.win,
-                                            text="Admin Panel",
-                                            command=AdminWindow)
+        if function == 'Admin':
+            self.admin_panel_button = tk.Button(self.win,
+                                                text="Admin Panel",
+                                                command=AdminWindow)
 
-        self.admin_panel_button.configure(borderwidth=1, font='Calibri 12 bold')
+            self.admin_panel_button.configure(borderwidth=1, font='Calibri 12 bold')
+            self.admin_panel_button.place(x=430, y=30)
 
-        self.print_button = tk.Button(self.win,
-                                      text="Print",
+        self.save_and_open_button = tk.Button(self.win,
+                                      text="Save and open \n in Excel",
                                       command=self.print_parts)
-        self.print_button.configure(borderwidth=1, font='Calibri 12 bold')
+        self.save_and_open_button.configure(borderwidth=1, font='Calibri 12 bold')
 
         # Buttons rendering
 
@@ -238,8 +239,7 @@ class PartsManager:
         self.add_part_to_db_button.place(x=615, y=335)
         self.clear_table_button.place(x=620, y=60)
         self.add_table_row_button.place(x=630, y=115)
-        self.print_button.place(x=640, y=385)
-        self.admin_panel_button.place(x=430, y=30)
+        self.save_and_open_button.place(x=610, y=385)
 
         # widgets declaration
 
@@ -280,7 +280,7 @@ class PartsManager:
 
         starting_x = 5
 
-        if max_row < 12:
+        if max_row < 15:
             row_widgets = []
 
             for i in range(5):
@@ -346,10 +346,10 @@ class PartsManager:
 
     def print_parts(self):
         """
-        this function takes the parts information from the app's table and transfroms them into a csv file
-        :return:
+        This function takes the parts information from the app's table and transforms them into an Excel file (xlsx).
         """
-        current_time = datetime.datetime.now().strftime("%Y-%m-%d+%H-%M-%S")
+        current_time = datetime.datetime.now().strftime(
+            "%Y-%m-%d_%H-%M-%S")
 
         with open("AutoDetails.json", "r") as f:
             json_data = f.read()
@@ -358,8 +358,11 @@ class PartsManager:
         km = data["KM"]
 
         output_directory = "D://PartsManager//temp_files"
+        excel_output_directory = "D:\\PartsManager\\xlsx_files"
 
         csv_file = os.path.join(output_directory, f"parts_data_{vin}_{km}_{current_time}.csv")
+        excel_file = os.path.join(excel_output_directory,
+                                  f"parts_data_{vin}_{km}km_{current_time}.xlsx")
 
         data_to_write = [["Part Number", "Part Name", "Stock", "Price", "Location"]]
 
@@ -379,127 +382,26 @@ class PartsManager:
         except Exception as e:
             messagebox.showerror("Error", f"Error saving data to {csv_file}: {str(e)}")
 
-        self.word_template(csv_file)
-        self.write_in_docx_file(csv_file=csv_file)
-
-
-    def write_in_docx_file(self, csv_file):
-        """
-        this function takes a csv file and transforms it into a docx file
-        :param csv_file:
-        :return:
-        """
-
-        with open("AutoDetails.json", "r") as f:
-            json_data = f.read()
-            data = json.loads(json_data)
-        vin = data["VIN"]
-        km = data["KM"]
-        current_time = datetime.datetime.now().strftime("%Y-%m-%d+%H-%M-%S")
-
-        doc = aw.Document()
-        builder = aw.DocumentBuilder(doc)
-
-        # Read data from the CSV file and add it to the Word document as a table
-        with open(csv_file, 'r') as file:
-            csv_data = csv.reader(file)
-            header = next(csv_data)  # Read the header row
-            table = builder.start_table()
-
-            # Add the header row to the table
-            for column_name in header:
-                builder.insert_cell()
-                builder.write(column_name)
-            builder.end_row()
-
-            # Add data rows to the table
-            for row in csv_data:
-                for cell_data in row:
-                    builder.insert_cell()
-                    builder.write(cell_data)
-                builder.end_row()
-
-            builder.end_table()
-
-
-        output_directory = "D://PartsManager//docx_files"
-        docx_file = os.path.join(output_directory, f"parts_data_{vin}_{km}_{current_time}.docx")
-
         try:
-            # Save the Word document
-            doc.save(docx_file)
+
+            csv_read = pd.read_csv(csv_file)
+
+            workbook = openpyxl.Workbook()
+            worksheet = workbook.active
+
+            data_to_write_excel = [list(csv_read.columns)] + csv_read.values.tolist()
+
+            for row in data_to_write_excel:
+                worksheet.append(row)
+
+            workbook.save(excel_file)
+
             os.remove(csv_file)
-            os.chmod(docx_file, 0o444)
+
+            os.startfile(excel_file)
         except Exception as e:
-            messagebox.showerror("Error", f"Error saving Word document to {docx_file}: {str(e)}")
+            messagebox.showerror("Error", f"Error saving data to {excel_file}: {str(e)}")
 
-    def word_template(self, csv_file, car_info=None):
-
-        current_time = datetime.datetime.now().strftime("%Y-%m-%d+%H-%M-%S")
-
-        with open("AutoDetails.json", "r") as f:
-            json_data = f.read()
-            data = json.loads(json_data)
-        vin = data["VIN"]
-        km = data["KM"]
-
-        doc = aw.Document()
-        builder = aw.DocumentBuilder(doc)
-
-        if car_info:
-            # Add car information as paragraphs
-            builder.write("Parts bill")
-            builder.writeln()
-            builder.writeln()
-            builder.writeln("Auto details:")
-
-            for key, value in car_info.items():
-                builder.write(f"{key}: {value}")
-                builder.writeln()
-
-            builder.writeln()
-            builder.write("Asd\tSad\tFeas\tFewa\tFadwa")
-            builder.writeln()
-            builder.write("KW:")
-            builder.writeln()
-            builder.writeln()
-            builder.write("I HANDED,")
-            builder.writeln("\t\t\t\t\t\t\t\tI RECEIVED,")
-
-        # Read data from the CSV file and add it to the Word document as a table
-        with open(csv_file, 'r') as file:
-            csv_data = csv.reader(file)
-            header = next(csv_data)  # Read the header row
-            table = builder.start_table()
-
-            # Add the header row to the table
-            for column_name in header:
-                builder.insert_cell()
-                builder.write(column_name)
-            builder.end_row()
-
-            # Add data rows to the table
-            for row in csv_data:
-                for cell_data in row:
-                    builder.insert_cell()
-                    builder.write(cell_data)
-                builder.end_row()
-
-            builder.end_table()
-
-        # Define the path for the output Word document
-        output_directory = "D://PartsManager//docx_files"
-        docx_file = os.path.join(output_directory, f"parts_data_{vin}_{km}_{current_time}.docx")
-
-        try:
-            # Save the Word document
-            doc.save(docx_file)
-
-            # Set the read-only attribute for the Word document (Windows)
-            os.system(f"attrib +r {docx_file}")
-
-        except Exception as e:
-            messagebox.showerror("Error", f"Error saving Word document to {docx_file}: {str(e)}")
 
 class AdminWindow:
 
@@ -1118,7 +1020,7 @@ class ManageParts:
     def __init__(self):
         self.root = tk.Tk()
         self.root.title("Manage Parts")
-        self.root.geometry("490x300")
+        self.root.geometry("480x260")
         center_window(self.root)
 
         self.root.columnconfigure(1, weight=1)
@@ -1128,20 +1030,20 @@ class ManageParts:
 
         # Buttons
 
-        self.add_part_button = tk.Button(self.root, text="Send", font=("Arial", "14"), command=self.add_part_btn_cmd)
-        self.add_part_button.configure(borderwidth=1, font='Calibri 14 bold')
+        self.add_part_button = tk.Button(self.root, text="Add part", font=("Arial", "14"), command=self.add_part_btn_cmd)
+        self.add_part_button.configure(borderwidth=1, font='Calibri 11 bold')
         # self.send_button.grid(row=7, column=4, pady=20)
-        self.add_part_button.place(x=332, y=250)
+        self.add_part_button.place(x=399, y=58)
 
-        self.retrieve_data_button = tk.Button(self.root, text="Retrieve data", font=("Arial", "14"))
-        self.retrieve_data_button.configure(borderwidth=1, font='Calibri 14 bold')
-        # self.retrieve_data_button.grid(row=7, column=3, pady=20)
-        self.retrieve_data_button.place(x=158, y=250)
+        # self.retrieve_data_button = tk.Button(self.root, text="Retrieve data", font=("Arial", "14"))
+        # self.retrieve_data_button.configure(borderwidth=1, font='Calibri 14 bold')
+        # # self.retrieve_data_button.grid(row=7, column=3, pady=20)
+        # self.retrieve_data_button.place(x=158, y=250)
 
-        self.clear_button = tk.Button(self.root, text="Clear", font=("Arial", "14"))
-        self.clear_button.configure(borderwidth=1, font='Calibri 14 bold')
-        # self.clear_button.grid(row=7, column=2, pady=20)
-        self.clear_button.place(x=45, y=250)
+        # self.clear_button = tk.Button(self.root, text="Clear", font=("Arial", "14"))
+        # self.clear_button.configure(borderwidth=1, font='Calibri 14 bold')
+        # # self.clear_button.grid(row=7, column=2, pady=20)
+        # self.clear_button.place(x=45, y=250)
 
         self.remove_button = tk.Button(self.root, text="Remove", font=("Arial", "14"), command=self.remove_btn_cmd)
         self.remove_button.configure(borderwidth=1, font='Calibri 11 bold')
@@ -1286,8 +1188,8 @@ class RecieveShipment:
 
 if __name__ == "__main__":
 
-    # LoginWindow()
-    PartsManager()
+    LoginWindow()
+    # PartsManager()
 
     # deletes everything from the json file
     data = {}
