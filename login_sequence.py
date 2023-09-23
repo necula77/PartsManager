@@ -46,15 +46,30 @@ def login_func(username, password, config=CONFIG):
                 data = cursor.fetchone()
                 # authorization_level = data[2]
 
-                if data == None:
+                if cursor.rowcount > 0:
+                    function = data[2]
+
+                    logging.info(f"Utilizatorul {username} s-a logat cu succes.")
+
+                    status = True
+
+                else:
                     status = False
+                    function = ""
 
                     print("Username-ul sau parola sunt gresite. Va rugam sa incercati din nou.")
-                    return data, status, username
-                else:
-                    logging.info(f"Utilizatorul {username} s-a logat cu succes.")
-                    status = True
-                    return data, status, username
+
+                return status, function, username
+
+                # if data == None:
+                #     status = False
+                #
+                #     print("Username-ul sau parola sunt gresite. Va rugam sa incercati din nou.")
+                #     return data, status, username
+                # else:
+                #     logging.info(f"Utilizatorul {username} s-a logat cu succes.")
+                #     status = True
+                #     return data, status, username
 
     except Exception as e:
         logging.error(f"Eroare la autentificare: {e}")
