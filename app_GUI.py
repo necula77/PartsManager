@@ -381,29 +381,38 @@ class PartsManager:
         current_time = datetime.datetime.now().strftime(
             "%Y-%m-%d_%H-%M-%S")
 
-        with open("AutoDetails.json", "r") as f:
-            json_data = f.read()
-            data = json.loads(json_data)
-        vin = data["VIN"]
-        km = data["KM"]
+        try:
+            with open("AutoDetails.json", "r") as f:
+                json_data = f.read()
+                data = json.loads(json_data)
+            vin = data["VIN"]
+            km = data["KM"]
 
-        output_directory = "D://PartsManager//temp_files"
-        excel_output_directory = "D:\\PartsManager\\xlsx_files"
+            output_directory = "D://PartsManager//temp_files"
+            excel_output_directory = "D:\\PartsManager\\xlsx_files"
 
-        csv_file = os.path.join(output_directory, f"parts_data_{vin}_{km}_{current_time}.csv")
-        excel_file = os.path.join(excel_output_directory,
-                                  f"parts_data_{vin}_{km}km_{current_time}.xlsx")
+            csv_file = os.path.join(output_directory, f"parts_data_{vin}_{km}_{current_time}.csv")
+            excel_file = os.path.join(excel_output_directory,
+                                      f"parts_data_{vin}_{km}km_{current_time}.xlsx")
 
-        data_to_write = [["Part Number", "Part Name", "Stock", "Price", "Location"]]
+            data_to_write = [["Part Number", "Part Name", "Stock", "Price", "Location"]]
 
-        for row_widgets in self.entry_widgets:
-            part_number = row_widgets[0].get()
-            part_name = row_widgets[1].get()
-            stock = row_widgets[2].get()
-            price = row_widgets[3].get()
-            location = row_widgets[4].get()
+            for row_widgets in self.entry_widgets:
+                part_number = row_widgets[0].get()
+                part_name = row_widgets[1].get()
+                stock = row_widgets[2].get()
+                price = row_widgets[3].get()
+                location = row_widgets[4].get()
 
-            data_to_write.append([part_number, part_name, stock, price, location])
+                data_to_write.append([part_number, part_name, stock, price, location])
+
+        except KeyError as e:
+
+            tk.messagebox.showerror(title="Error",
+                                    message="Please fill out information about car in AutoDetails window.")
+
+        except Exception as e:
+            print(e)
 
         try:
             with open(csv_file, mode='w', newline='') as file:
@@ -429,6 +438,10 @@ class PartsManager:
             os.remove(csv_file)
 
             os.startfile(excel_file)
+
+            for row_widgets in self.entry_widgets:
+                part_number = row_widgets[0].get()
+                DB_actions.remove_stock(part_number=part_number,stock_to_remove=1)
         except Exception as e:
             messagebox.showerror("Error", f"Error saving data to {excel_file}: {str(e)}")
 
@@ -1136,13 +1149,7 @@ class ManageParts:
                                           price=price,
                                           logged_user=USERNAME)
 
-        if status is True:
-            return messagebox.showinfo(title="Message",
-                                       message=f"Piesa {part_name} a fost introdusa cu succes."),\
-                   self.root.destroy()
-        else:
-            return messagebox.showerror(title="Error",
-                                        message=f"Piesa nu poate fi adaugata, va rugam sa verificati datele introduse.")
+        self.root.destroy()
 
     def remove_btn_cmd(self):
 
@@ -1151,13 +1158,7 @@ class ManageParts:
         status = DB_actions.remove_part(part_number=part_number,
                                         logged_user=USERNAME)
 
-        if status is True:
-            return messagebox.showinfo(title="Message",
-                                       message=f"Piesa {part_number} a fost stearsa cu succes."),\
-                   self.root.destroy()
-        else:
-            return messagebox.showerror(title="Error",
-                                        message=f"Piesa nu poate fi stearsa, va rugam sa verificati datele introduse.")
+        self.root.destroy()
 
 
 class RecieveShipment:
