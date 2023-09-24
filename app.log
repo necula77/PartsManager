@@ -200,3 +200,110 @@ DETAIL:  Failing row contains (28, , , , , , 2023-09-16).
 23-Sep-2023 22:29:17 - INFO - DB_actions.py - 48 - User sef a accesat baza de date pentru a modifica datele masinii: B55CSC, SDMKFJCN189DNUNUB.
 23-Sep-2023 22:30:07 - INFO - DB_actions.py - 89 - User sef a accesat baza de date pentru a adauga Bara, 0121C-1312B.
 23-Sep-2023 23:22:10 - INFO - login_sequence.py - 52 - Utilizatorul necula77 s-a logat cu succes.
+24-Sep-2023 18:57:18 - INFO - login_sequence.py - 52 - Utilizatorul necula77 s-a logat cu succes.
+24-Sep-2023 18:57:30 - INFO - DB_actions.py - 116 - User necula77 a accesat baza de date pentru a sterge piesa asdwasw.
+24-Sep-2023 19:00:57 - INFO - login_sequence.py - 52 - Utilizatorul necula77 s-a logat cu succes.
+24-Sep-2023 19:01:08 - ERROR - DB_actions.py - 96 - Eroare la introducerea in datelor in baza de date. Query-ul a fost scris gresit. 
+ syntax error at or near ")"
+LINE 2: ...                               values ('sad', '', '', '', );
+                                                                     ^
+
+24-Sep-2023 19:02:01 - INFO - login_sequence.py - 52 - Utilizatorul necula77 s-a logat cu succes.
+24-Sep-2023 19:02:07 - ERROR - DB_actions.py - 96 - Eroare la introducerea in datelor in baza de date. Query-ul a fost scris gresit. 
+ syntax error at or near ")"
+LINE 2: ...                              values ('asdc', '', '', '', );
+                                                                     ^
+
+24-Sep-2023 19:03:54 - INFO - login_sequence.py - 52 - Utilizatorul necula77 s-a logat cu succes.
+24-Sep-2023 19:03:57 - ERROR - DB_actions.py - 100 - Eroare la introducerea in datelor in baza de date. Query-ul a fost scris gresit. 
+ syntax error at or near ")"
+LINE 2: ...                               values ('awd', '', '', '', );
+                                                                     ^
+
+24-Sep-2023 19:04:08 - ERROR - DB_actions.py - 100 - Eroare la introducerea in datelor in baza de date. Query-ul a fost scris gresit. 
+ syntax error at or near ")"
+LINE 2: ...                               values ('asd', '', '', '', );
+                                                                     ^
+
+24-Sep-2023 19:05:27 - INFO - login_sequence.py - 52 - Utilizatorul necula77 s-a logat cu succes.
+24-Sep-2023 19:05:31 - ERROR - DB_actions.py - 100 - Eroare la introducerea in datelor in baza de date. Query-ul a fost scris gresit. 
+ syntax error at or near ")"
+LINE 2: ...                              values ('asdc', '', '', '', );
+                                                                     ^
+
+24-Sep-2023 19:05:54 - INFO - login_sequence.py - 52 - Utilizatorul necula77 s-a logat cu succes.
+24-Sep-2023 19:06:13 - ERROR - DB_actions.py - 100 - Eroare la introducerea in datelor in baza de date. Query-ul a fost scris gresit. 
+ syntax error at or near ")"
+LINE 2: ...                              values ('awdc', '', '', '', );
+                                                                     ^
+
+24-Sep-2023 19:06:27 - ERROR - DB_actions.py - 100 - Eroare la introducerea in datelor in baza de date. Query-ul a fost scris gresit. 
+ syntax error at or near ")"
+LINE 2: ...                              values ('sdfv', '', '', '', );
+                                                                     ^
+
+24-Sep-2023 19:07:17 - INFO - login_sequence.py - 52 - Utilizatorul necula77 s-a logat cu succes.
+24-Sep-2023 19:07:20 - ERROR - DB_actions.py - 97 - Eroare la introducerea in datelor in baza de date. Query-ul a fost scris gresit. 
+ syntax error at or near ")"
+LINE 2: ...                               values ('asd', '', '', '', );
+                                                                     ^
+
+24-Sep-2023 19:07:39 - INFO - login_sequence.py - 52 - Utilizatorul necula77 s-a logat cu succes.
+24-Sep-2023 19:07:42 - ERROR - DB_actions.py - 97 - Eroare la introducerea in datelor in baza de date. Query-ul a fost scris gresit. 
+ syntax error at or near ")"
+LINE 2: ...                              values ('', 'asdc', '', '', );
+                                                                     ^
+
+24-Sep-2023 19:07:47 - ERROR - DB_actions.py - 182 - Eroare la introducerea datelor in baza de date: invalid input syntax for type integer: ""
+LINE 2: ...                                  SET "Stock" = "Stock" + ''
+                                                                     ^
+
+24-Sep-2023 19:08:13 - INFO - login_sequence.py - 52 - Utilizatorul necula77 s-a logat cu succes.
+24-Sep-2023 19:08:16 - ERROR - DB_actions.py - 182 - Eroare la introducerea datelor in baza de date: invalid input syntax for type integer: ""
+LINE 2: ...                                  SET "Stock" = "Stock" + ''
+                                                                     ^
+
+24-Sep-2023 19:08:45 - INFO - login_sequence.py - 52 - Utilizatorul necula77 s-a logat cu succes.
+24-Sep-2023 19:13:45 - INFO - DB_actions.py - 166 - User necula77 a accesat baza de date
+                pentru a modifica stockul din depozit pentru 0102C-13256, acesta fiind acum 11 bucati.
+24-Sep-2023 19:14:14 - INFO - login_sequence.py - 52 - Utilizatorul necula77 s-a logat cu succes.
+24-Sep-2023 19:16:15 - INFO - login_sequence.py - 52 - Utilizatorul necula77 s-a logat cu succes.
+24-Sep-2023 19:16:18 - ERROR - DB_actions.py - 178 - Error whilst sending data to data base, 'Stock' box cannot be empty. 
+ invalid input syntax for type integer: ""
+LINE 2: ...                                  SET "Stock" = "Stock" + ''
+                                                                     ^
+
+24-Sep-2023 19:16:27 - ERROR - DB_actions.py - 178 - Error whilst sending data to data base, 'Stock' box cannot be empty. 
+ invalid input syntax for type integer: ""
+LINE 2: ...                                  SET "Stock" = "Stock" + ''
+                                                                     ^
+
+24-Sep-2023 19:16:47 - ERROR - DB_actions.py - 178 - Error whilst sending data to data base, 'Stock' box cannot be empty. 
+ invalid input syntax for type integer: ""
+LINE 2: ...                                  SET "Stock" = "Stock" + ''
+                                                                     ^
+
+24-Sep-2023 19:17:01 - ERROR - DB_actions.py - 178 - Error whilst sending data to data base, 'Stock' box cannot be empty. 
+ invalid input syntax for type integer: ""
+LINE 2: ...                                  SET "Stock" = "Stock" + ''
+                                                                     ^
+
+24-Sep-2023 19:17:09 - INFO - DB_actions.py - 166 - User necula77 a accesat baza de date
+                pentru a modifica stockul din depozit pentru 023B-14325, acesta fiind acum 31 bucati.
+24-Sep-2023 20:34:22 - ERROR - DB_actions.py - 97 - Eroare la introducerea in datelor in baza de date. Query-ul a fost scris gresit. 
+ syntax error at or near ")"
+LINE 2: ...                               values ('ads', '', '', '', );
+                                                                     ^
+
+24-Sep-2023 20:34:59 - INFO - login_sequence.py - 52 - Utilizatorul necula77 s-a logat cu succes.
+24-Sep-2023 20:36:17 - INFO - login_sequence.py - 52 - Utilizatorul necula77 s-a logat cu succes.
+24-Sep-2023 20:37:16 - INFO - login_sequence.py - 52 - Utilizatorul necula77 s-a logat cu succes.
+24-Sep-2023 20:38:21 - INFO - login_sequence.py - 52 - Utilizatorul necula77 s-a logat cu succes.
+24-Sep-2023 20:38:35 - INFO - login_sequence.py - 52 - Utilizatorul necula77 s-a logat cu succes.
+24-Sep-2023 20:39:08 - INFO - login_sequence.py - 52 - Utilizatorul necula77 s-a logat cu succes.
+24-Sep-2023 20:39:45 - INFO - login_sequence.py - 52 - Utilizatorul necula77 s-a logat cu succes.
+24-Sep-2023 20:40:09 - INFO - login_sequence.py - 52 - Utilizatorul necula77 s-a logat cu succes.
+24-Sep-2023 20:40:26 - INFO - login_sequence.py - 52 - Utilizatorul necula77 s-a logat cu succes.
+24-Sep-2023 20:41:57 - INFO - login_sequence.py - 52 - Utilizatorul necula77 s-a logat cu succes.
+24-Sep-2023 20:43:05 - INFO - login_sequence.py - 52 - Utilizatorul necula77 s-a logat cu succes.
+24-Sep-2023 20:43:14 - INFO - login_sequence.py - 52 - Utilizatorul necula77 s-a logat cu succes.
