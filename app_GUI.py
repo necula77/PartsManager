@@ -166,6 +166,8 @@ class PartsManager:
         self.win = tk.Tk()
         self.win.title("PartsManager")
 
+        self.win.protocol("WM_DELETE_WINDOW", self.on_closing)
+
         self.win.geometry("745x500")
         # CENTRARE PE MIJLOC A APLICATIEI
         center_window(self.win)
@@ -303,12 +305,27 @@ class PartsManager:
         self.win.mainloop()
         self.status = False
 
+    def on_closing(self):
+        if tk.messagebox.askokcancel(title="Exit",
+                                     message="Are you sure you want to close the app?"):
+            self.win.destroy()
+
     def add_table_row(self):
         global max_row
         global starting_x
         global starting_y
 
         starting_x = 5
+
+        for row_widgets in self.entry_widgets:
+            part_number = row_widgets[0].get()
+            part_name = row_widgets[1].get()
+            stock = row_widgets[2].get()
+            price = row_widgets[3].get()
+            location = row_widgets[4].get()
+            if part_number == "" or part_name == "" or stock == "" or price == "" or location == "":
+                return tk.messagebox.showerror(title="Error",
+                                               message="Please fill previous row before creating another one.")
 
         if max_row < 15:
             row_widgets = []
@@ -403,6 +420,9 @@ class PartsManager:
                 stock = row_widgets[2].get()
                 price = row_widgets[3].get()
                 location = row_widgets[4].get()
+                if part_number == "" or part_name == "" or stock == "" or price == "" or location == "":
+                    return tk.messagebox.showerror(title="Error",
+                                                   message="Please make sure every field is completed.")
 
                 data_to_write.append([part_number, part_name, stock, price, location])
 
@@ -410,6 +430,7 @@ class PartsManager:
 
             tk.messagebox.showerror(title="Error",
                                     message="Please fill out information about car in AutoDetails window.")
+            AutoDetails()
 
         except Exception as e:
             print(e)
@@ -477,6 +498,8 @@ class AdminWindow:
                                            text="Delete car information",
                                            command=self.delete_car_information)
         self.delete_car_button.configure(borderwidth=1, font='Calibri 12 bold')
+
+
 
         # Buttons rendering
 
@@ -1024,20 +1047,31 @@ class AutoDetails:
         self.delete_data_from_entrys()
 
         # now inserting data into entrys
-        self.vin_entry.insert(0, data['VIN'])
-        self.license_plate_entry.insert(0, data['License Plate'])
-        self.engine_entry.insert(0, data['Engine'])
-        self.km_entry.insert(0, data['KM'])
-        self.kw_entry.insert(0, data['KW'])
-        self.cc_entry.insert(0, data['CMC'])
-        self.make_entry.insert(0, data['Manufacturer'])
-        self.model_entry.insert(0, data['Model'])
-        self.year_entry.insert(0, data['Year'])
-        self.fuel_type_entry.insert(0, data['Fuel_Type'])
+        try:
+            self.vin_entry.insert(0, data['VIN'])
+            self.license_plate_entry.insert(0, data['License Plate'])
+            self.engine_entry.insert(0, data['Engine'])
+            self.km_entry.insert(0, data['KM'])
+            self.kw_entry.insert(0, data['KW'])
+            self.cc_entry.insert(0, data['CMC'])
+            self.make_entry.insert(0, data['Manufacturer'])
+            self.model_entry.insert(0, data['Model'])
+            self.year_entry.insert(0, data['Year'])
+            self.fuel_type_entry.insert(0, data['Fuel_Type'])
 
-        self.save_data_to_json()
+            self.save_data_to_json()
 
-        return data
+            return data
+
+        except TypeError as e:
+
+            tk.messagebox.showerror(title="Error",
+                                    message="Please make sure you have entered a registered car.")
+            self.root.destroy()
+            AutoDetails()
+
+        except Exception as e:
+            logging.error(f"{USERNAME}: {e}")
 
     def delete_data_from_entrys(self, delete_vin=True, delete_license=True):
         # deleting data from entrys

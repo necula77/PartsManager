@@ -73,7 +73,10 @@ def recieve_from_db(config=CONFIG, vin="", license_plate=""):
 
                 return data
 
+
+
     except Exception as e:
+        ps.errors.lookup(e)
         logging.error(f"Eroare la autentificare: {e}")
         exit()
 
