@@ -49,15 +49,13 @@ def login_func(username, password, config=CONFIG):
                 if cursor.rowcount > 0:
                     function = data[2]
 
-                    logging.info(f"Utilizatorul {username} s-a logat cu succes.")
+                    logging.info(f"User {username} logged in successfully.")
 
                     status = True
 
                 else:
                     status = False
                     function = ""
-
-                    print("Username-ul sau parola sunt gresite. Va rugam sa incercati din nou.")
 
                 return status, function, username
 
@@ -72,7 +70,7 @@ def login_func(username, password, config=CONFIG):
                 #     return data, status, username
 
     except Exception as e:
-        logging.error(f"Eroare la autentificare: {e}")
+        logging.error(f"Error logging in: {e}")
 
 
 def signup_func(username, password, first_name, last_name, function, logged_user,  config=CONFIG):
@@ -89,23 +87,23 @@ def signup_func(username, password, first_name, last_name, function, logged_user
 
                 cursor.execute(sql_query)
                 conn.commit()
-        logging.info(f"User: {username}, NUME: {last_name} PRENUME: {first_name}"
-                     f" a fost adaugat in baza de date de catre '{logged_user}'.")
+        logging.info(f"User: {username}, Last name: {last_name}, First name: {first_name};"
+                     f" was added in database by '{logged_user}'.")
 
     except pserrors.UniqueViolation:
 
-        logging.error(f"Username-ul: {username}, exista deja, va rugam sa alegeti altul.")
+        logging.error(f"Username: {username}, is already used, please choose a new one.")
         conn.rollback()
 
     except pserrors.CheckViolation as e:
-        logging.error(f"Campurile nu au fost completate corect!")
+        logging.error(f"Fields were completed wrongfully.")
 
     except pserrors.StringDataRightTruncation as e:
-        logging.error(f"Una dintre valorile introduse este prea lunga!")
+        logging.error(f"One of the values is too long.")
 
     except Exception as e:
         pserrors.lookup(e)
-        logging.error(f"Eroare la inregistrare: {e}")
+        logging.error(f"Error logging in: {e}")
 
 
 def delete_user(username, first_name, last_name, logged_user, config=CONFIG):
@@ -122,12 +120,13 @@ def delete_user(username, first_name, last_name, logged_user, config=CONFIG):
                 if cursor.rowcount > 0:
                     status = True
                     tk.messagebox.showinfo(title="Succes", message=f"User: {username} has been deleted.")
+                    logging.info(f"User '{username}' was deleted by '{logged_user}'.")
                 else:
                     tk.messagebox.showerror(title="Fail", message="User could not be deleted.")
                     status = False
 
     except Exception as e:
-        print(e)
+        logging.error(f"Error deleting user: {e}")
 
 
 def verify_if_user_exists(username, config=CONFIG):
@@ -168,23 +167,23 @@ def edit_user_info(user_id, new_username, password, first_name, last_name, funct
                 else:
                     tk.messagebox.showerror(title="Fail", message="User could not be edited.")
 
-        logging.info(f"""User: {user_id},NUME: {last_name} PRENUME: {first_name} USERNAME: {new_username}
-                          a fost editat in baza de date de catre '{logged_user}'.""")
+        logging.info(f"""User: {user_id}, Last name: {last_name}, First name: {first_name}, Username: {new_username}
+                          was edited in database by '{logged_user}'.""")
 
     except pserrors.UniqueViolation:
 
-        logging.error(f"Username-ul: {new_username}, exista deja, va rugam sa alegeti altul.")
+        logging.error(f"Username: {new_username}, is already used, please choose a new one.")
         conn.rollback()
 
     except pserrors.CheckViolation as e:
-        logging.error(f"Campurile nu au fost completate corect!")
+        logging.error(f"Fields were completed wrongfully.")
 
     except pserrors.StringDataRightTruncation as e:
-        logging.error(f"Una dintre valorile introduse este prea lunga!")
+        logging.error(f"One of the values is too long.")
 
     except Exception as e:
         pserrors.lookup(e)
-        logging.error(f"Eroare la inregistrare: {e}")
+        logging.error(f"Error logging in: {e}")
 
 
 config = get_config("config.json")

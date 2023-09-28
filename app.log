@@ -338,3 +338,32 @@ LINE 2: ...                               values ('ads', '', '', '', );
 25-Sep-2023 19:02:40 - INFO - login_sequence.py - 52 - Utilizatorul necula77 s-a logat cu succes.
 25-Sep-2023 19:03:33 - INFO - login_sequence.py - 52 - Utilizatorul necula77 s-a logat cu succes.
 25-Sep-2023 19:04:24 - ERROR - login_sequence.py - 101 - Campurile nu au fost completate corect!
+28-Sep-2023 14:44:33 - INFO - login_sequence.py - 52 - Utilizatorul necula77 s-a logat cu succes.
+28-Sep-2023 14:45:32 - INFO - login_sequence.py - 92 - User: mircea123, NUME: Andrei PRENUME: Mircea a fost adaugat in baza de date de catre 'necula77'.
+28-Sep-2023 14:46:21 - INFO - login_sequence.py - 52 - Utilizatorul mircea123 s-a logat cu succes.
+28-Sep-2023 14:46:40 - INFO - login_sequence.py - 52 - Utilizatorul mircea123 s-a logat cu succes.
+28-Sep-2023 14:47:00 - INFO - login_sequence.py - 52 - Utilizatorul necula77 s-a logat cu succes.
+28-Sep-2023 14:47:57 - INFO - login_sequence.py - 171 - User: 46,NUME: Gabi PRENUME: Mihai USERNAME: rusu
+                          a fost editat in baza de date de catre 'necula77'.
+28-Sep-2023 14:50:06 - INFO - DB_actions.py - 48 - User necula77 a accesat baza de date pentru a modifica datele masinii: B405CSF, JANFC9382HBHF8323.
+28-Sep-2023 14:51:17 - INFO - DB_actions.py - 169 - User necula77 a accesat baza de date
+                pentru a modifica stockul din depozit pentru 023B-14325, acesta fiind acum 35 bucati.
+28-Sep-2023 14:51:33 - INFO - DB_actions.py - 130 - User necula77 a accesat baza de date pentru a sterge piesa 023B-14325.
+28-Sep-2023 14:52:07 - INFO - DB_actions.py - 95 - User necula77 a accesat baza de date pentru a adauga Filtru aer, 023B-14325.
+28-Sep-2023 14:54:38 - INFO - login_sequence.py - 52 - Utilizatorul necula77 s-a logat cu succes.
+28-Sep-2023 14:55:44 - INFO - login_sequence.py - 52 - Utilizatorul necula77 s-a logat cu succes.
+28-Sep-2023 15:05:14 - INFO - login_sequence.py - 52 - Utilizatorul necula77 s-a logat cu succes.
+28-Sep-2023 15:05:26 - ERROR - DB_actions.py - 58 - Eroare la introducerea datelor in baza de date: invalid input syntax for type integer: ""
+LINE 3:                                 "KW" = '',
+                                               ^
+
+28-Sep-2023 15:06:16 - INFO - login_sequence.py - 52 - Utilizatorul necula77 s-a logat cu succes.
+28-Sep-2023 15:07:53 - INFO - login_sequence.py - 52 - Utilizatorul necula77 s-a logat cu succes.
+28-Sep-2023 15:09:37 - INFO - login_sequence.py - 52 - Utilizatorul necula77 s-a logat cu succes.
+28-Sep-2023 15:10:24 - INFO - login_sequence.py - 52 - Utilizatorul necula77 s-a logat cu succes.
+28-Sep-2023 15:10:49 - INFO - login_sequence.py - 52 - Utilizatorul necula77 s-a logat cu succes.
+28-Sep-2023 15:37:33 - INFO - login_sequence.py - 52 - Utilizatorul necula77 s-a logat cu succes.
+28-Sep-2023 15:55:33 - INFO - login_sequence.py - 52 - User necula77 logged in successfully.
+28-Sep-2023 17:00:22 - INFO - login_sequence.py - 52 - User necula77 logged in successfully.
+28-Sep-2023 17:02:30 - INFO - login_sequence.py - 52 - User necula77 logged in successfully.
+28-Sep-2023 17:03:26 - INFO - login_sequence.py - 52 - User necula77 logged in successfully.

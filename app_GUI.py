@@ -77,8 +77,16 @@ def run_app():
 
     LoginWindow()
 
+    clear_json("AutoDetails.json")
+
+def clear_json(file):
+    """
+    this function deletes data from a json file
+    :param file:
+    :return:
+    """
     data = {}
-    with open("AutoDetails.json", 'w') as json_file:
+    with open(file, 'w') as json_file:
         json.dump(data, json_file, indent=4)
 
 
@@ -144,7 +152,7 @@ class LoginWindow:
         if self.username_entry.get() and self.password_entry.get():
             self.status, function, USERNAME = ls.login_func(username=self.username_entry.get(), password=self.password_entry.get(), config=config)
             if self.status is False:
-                messagebox.showerror(title="Fail Authenticator", message="Username-ul sau parola sunt gresite.")
+                messagebox.showerror(title="Fail Authenticator", message="Username or password is incorrect!")
             else:
                 self.root.destroy()
                 PartsManager(function)
@@ -169,19 +177,11 @@ class PartsManager:
         self.win.protocol("WM_DELETE_WINDOW", self.on_closing)
 
         self.win.geometry("745x500")
-        # CENTRARE PE MIJLOC A APLICATIEI
+
         center_window(self.win)
 
-        # CA SA PORNEASCA IN FULL SCREEN
-        # self.win.state("zoomed")
-
-        # NU POATE FI MINIMIZATA SAU MAXIMIZATA APLICATIA
+        # NU POATE FI MODIFICATA MARIMEA APLICATIEI
         self.win.resizable(False, False)
-
-        # pt full screen
-        # self.width = self.win.winfo_screenwidth()
-        # self.height = self.win.winfo_screenheight()
-        # self.win.geometry("%dx%d" % (self.width, self.height))
 
         self.frame = tk.Frame(self.win)
         self.frame.columnconfigure(0, weight=1)
@@ -308,7 +308,8 @@ class PartsManager:
     def on_closing(self):
         if tk.messagebox.askokcancel(title="Exit",
                                      message="Are you sure you want to close the app?"):
-            self.win.destroy()
+            clear_json("AutoDetails.json")
+            exit()
 
     def add_table_row(self):
         global max_row
@@ -970,7 +971,7 @@ class AutoDetails:
             self.fuel_type_entry.insert(0, data.get("Fuel Type", ""))
 
         except FileNotFoundError:
-            messagebox.showerror(title="Error", message="Fisierul Json nu a fost gasit!")
+            messagebox.showerror(title="Error", message="Json file could not be found!")
 
     def send_btn_cmd(self):
         # functie care trimite datele auto spre baza de date in cazul in care nu sunt deja in ea
@@ -1010,7 +1011,7 @@ class AutoDetails:
         self.save_data_to_json()
 
         if status is True:
-            messagebox.showinfo(title="Message", message="Datele au fost introduse cu succes.")
+            messagebox.showinfo(title="Message", message="Data was updated succesfully!")
 
     def retrieve_btn_cmd(self):
 
@@ -1087,9 +1088,6 @@ class AutoDetails:
         self.model_entry.delete(0, 'end')
         self.year_entry.delete(0, 'end')
         self.fuel_type_entry.delete(0, 'end')
-
-    def get_vin(self):
-        return self.vin_entry.get()
 
 
 class ManageParts:
@@ -1240,11 +1238,11 @@ class RecieveShipment:
 
         if status is True:
             return messagebox.showinfo(title="Message",
-                                       message=f"Stock-ul pentru piesa {part_number} a fost modificat cu succes."),\
+                                       message=f"Stock for part {part_number} was modified successfully!"),\
                    self.root.destroy()
         else:
             return messagebox.showerror(title="Error",
-                                        message=f"Stock-ul nu poate fi modificat, va rugam sa verificati datele introduse.")
+                                        message=f"Stock can not be modified, please look over the provided data!")
 
     def clear_btn_cmd(self):
         self.part_number_entry.delete(0, 'end')

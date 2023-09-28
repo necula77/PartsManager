@@ -20,6 +20,11 @@ logging.basicConfig(level=logging.INFO,
 
 
 def find_error_code(e):
+    """
+    this function finds the error code from the psycopg2 package
+    :param e:
+    :return:
+    """
     psycopg2.errors.lookup(e)
     print('Error! Code: {c}, Message, {m}'.format(c=type(e).__name__, m=str(e)))
 
@@ -31,7 +36,7 @@ def get_config(file="config.json"):
 
         return data
     except Exception as e:
-        logging.error(f"Exceptie la citirea configului {e}.")
+        logging.error(f"An error occured while reading config, {e}.")
         exit()
 
 
@@ -45,17 +50,25 @@ def insert_in_db(sql_query, logged_user, license_plate, vin, config=CONFIG):
             with conn.cursor() as cursor:
                 cursor.execute(sql_query)
                 conn.commit()
-        logging.info(f"""User {logged_user} a accesat baza de date pentru a modifica datele masinii: {license_plate}, {vin}.""")
+        logging.info(f"""User {logged_user} accesed the data base to modify this car's info: {license_plate}, {vin}.""")
 
         return True
 
+    except pserrors.InvalidTextRepresentation as e:
+        tk.messagebox.showerror(title="Error",
+                                message="Please make sure that every box was filled correctly.")
+
+    except pserrors.SyntaxError as e:
+        tk.messagebox.showerror(title="Error",
+                                message="Please make sure that every box was filled correctly.")
+
     except SyntaxError as e:
 
-        logging.error(f"Eroare la introducerea in datelor in baza de date. Query-ul a fost scris gresit. \n {e}")
+        logging.error(f"An error occured while introducing data in database. The query is written wrong. \n {e}")
 
     except Exception as e:
-
-        logging.error(f"Eroare la introducerea datelor in baza de date: {e}")
+        pserrors.lookup(e)
+        logging.error(f"An error occured while introducing data in database: {e}")
         exit()
 
 
@@ -77,8 +90,7 @@ def recieve_from_db(config=CONFIG, vin="", license_plate=""):
 
     except Exception as e:
         ps.errors.lookup(e)
-        logging.error(f"Eroare la autentificare: {e}")
-        exit()
+        logging.error(f"Error logging in: {e}")
 
 
 def register_part(part_number, part_name, stock, location, price, logged_user, config=CONFIG):
@@ -91,28 +103,27 @@ def register_part(part_number, part_name, stock, location, price, logged_user, c
                 conn.commit()
                 if cursor.rowcount > 0:
                     messagebox.showinfo(title="Message",
-                                        message=f"Piesa {part_number} a fost adaugata cu succes.")
+                                        message=f"Part {part_number} was added successfully.")
                     logging.info(
-                        f"""User {logged_user} a accesat baza de date pentru a adauga {part_name}, {part_number}.""")
+                        f"""User {logged_user} accesed database to add {part_name}, {part_number}.""")
 
     except pserrors.SyntaxError as e:
 
-        logging.error(f"Eroare la introducerea in datelor in baza de date. Query-ul a fost scris gresit. \n {e}")
+        logging.error(f"An error occured while introducing data in database. The query is written wrong. \n {e}")
         messagebox.showerror(title="Error",
-                             message=f"Piesa nu poate fi adugata, va rugam sa verificati datele introduse.")
+                             message=f"The query is written wrong. Please check provided data!")
 
     except pserrors.UniqueViolation as e:
 
-        logging.error(f"Eroare la introducerea datelor in baza de date, piesa introduse este deja inregistrata. \n {e}")
+        logging.error(f"An error occured while introducing data in database, part is already registered. \n {e}")
         messagebox.showerror(title="Error",
-                             message=f"Piesa nu poate fi adugata, va rugam sa verificati datele introduse.")
+                             message=f"Part is already registered.")
 
     except Exception as e:
         psycopg2.errors.lookup(e)
-        logging.error(f"Eroare la introducerea datelor in baza de date: {e}")
+        logging.error(f"An error occured while introducing data in database: {e}")
         messagebox.showerror(title="Error",
-                             message=f"Piesa nu poate fi adugata, va rugam sa verificati datele introduse.")
-        exit()
+                             message=f"Part can not be added, please check provided data.")
 
 
 def remove_part(part_number, logged_user,config=CONFIG):
@@ -126,25 +137,20 @@ def remove_part(part_number, logged_user,config=CONFIG):
 
                 if cursor.rowcount > 0:
                     messagebox.showinfo(title="Message",
-                                               message=f"Piesa {part_number} a fost stearsa cu succes.")
+                                               message=f"Part {part_number} was successfully deleted.")
                     logging.info(
-                        f"""User {logged_user} a accesat baza de date pentru a sterge piesa {part_number}.""")
+                        f"""User {logged_user} accesed database to delete part {part_number}.""")
                 else:
                     messagebox.showerror(title="Error",
-                                         message=f"Piesa nu poate fi stearsa, va rugam sa verificati datele introduse.")
+                                         message=f"Part can not be deleted, please check provided data.")
 
     except pserrors.SyntaxError as e:
 
-        logging.error(f"Eroare la stergerea informatiilor din baza de date. Query-ul a fost scris gresit. \n {e}")
-
-    except pserrors.UniqueViolation as e:
-
-        logging.error(f"Eroare la stergerea informatiilor din baza de date, piesa introduse este deja inregistrata. \n {e}")
+        logging.error(f"Error deleting part from database. Query is wrong. \n {e}")
 
     except Exception as e:
         psycopg2.errors.lookup(e)
-        logging.error(f"Eroare la stergerea informatiilor din baza de date: {e}")
-        exit()
+        logging.error(f"Error deleting part from database: {e}")
 
 
 def recieve_shipment(part_number, stock_to_add, logged_user, config=CONFIG):
@@ -167,8 +173,8 @@ def recieve_shipment(part_number, stock_to_add, logged_user, config=CONFIG):
                 new_stock = cursor.fetchone()
 
         logging.info(
-            f"""User {logged_user} a accesat baza de date
-                pentru a modifica stockul din depozit pentru {part_number}, acesta fiind acum {new_stock[0]} bucati.""")
+            f"""User {logged_user} accesed database
+                to modify stock from warehouse for {part_number}, now being {new_stock[0]}.""")
 
         return True
 
@@ -210,7 +216,7 @@ def recieve_info_abt_part(part_number, config=CONFIG):
                 return data
 
     except Exception as e:
-        logging.error(f"Eroare la identificarea piesei: {e}.")
+        logging.error(f"Error identifying the part: {e}.")
 
 def remove_stock(part_number, stock_to_remove, config=CONFIG):
 
