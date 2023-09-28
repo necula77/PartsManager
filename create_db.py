@@ -78,6 +78,17 @@ def create_schema_and_table_for_login(config=CONFIG):
 
         logging.error(f"Error whilst creating DataBase: {e}")
 
+    try:
+        with ps.connect(**config) as conn:
+            with conn.cursor() as cursor:
+                sql_query = """INSERT INTO "Authorization"."LOGIN_INFO"
+                            (first_name, last_name, username, password, "function", starting_date)
+                            VALUES ('temporary', 'temporary', 'admin', 'admin', 'Admin', CURRENT_DATE);"""
+
+    except Exception as e:
+
+        logging.error(f"Error whilst creating DataBase: {e}")
+
 
 def create_schema_and_table_for_cars(config=CONFIG):
 
@@ -132,7 +143,7 @@ def create_schema_and_table_for_parts(config=CONFIG):
 
     except Exception as e:
 
-        logging.error(f"Eroare la creearea bazei de date: {e}")
+        logging.error(f"Error whilst creating DataBase: {e}")
         exit()
 
     try:
@@ -152,7 +163,7 @@ def create_schema_and_table_for_parts(config=CONFIG):
 
     except Exception as e:
 
-        logging.error(f"Eroare la creearea bazei de date: {e}")
+        logging.error(f"Error whilst creating DataBase: {e}")
 
 
 def create_data_base():
@@ -161,7 +172,7 @@ def create_data_base():
     create_schema_and_table_for_cars()
     create_schema_and_table_for_parts()
     delete_public_schema()
-    logging.info(f"DataBase was succesfully created!")
+    logging.info(f"DataBase was successfully created!")
 
 
 
