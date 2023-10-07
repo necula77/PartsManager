@@ -24,10 +24,12 @@ logging.basicConfig(level=logging.INFO,
                     format="%(asctime)s - %(levelname)s - %(filename)s - %(lineno)s - %(message)s",
                     datefmt="%d-%b-%Y %H:%M:%S",
                     handlers=[
-                        logging.FileHandler("app.log"),  # apare intr un fisier
-                        logging.StreamHandler()  # apare in consola ca un print
+                        logging.FileHandler("app.log"),
+                        logging.StreamHandler()
                     ]
                     )
+
+
 def center_window(win):
     """
     centers a tkinter window
@@ -78,6 +80,7 @@ def run_app():
     LoginWindow()
 
     clear_json("AutoDetails.json")
+
 
 def clear_json(file):
     """
@@ -164,7 +167,6 @@ class PartsManager:
     global starting_x
     global starting_y
 
-    next_row = 3
     max_row = 0
     starting_x = 5
     starting_y = 130
@@ -345,7 +347,6 @@ class PartsManager:
 
             starting_y += 20
             self.entry_widgets.append(row_widgets)
-            self.next_row += 1
             max_row += 1
         else:
             tk.messagebox.showinfo(title="Maximum rows",

@@ -87,8 +87,13 @@ def signup_func(username, password, first_name, last_name, function, logged_user
 
                 cursor.execute(sql_query)
                 conn.commit()
-        logging.info(f"User: {username}, Last name: {last_name}, First name: {first_name};"
-                     f" was added in database by '{logged_user}'.")
+                if cursor.rowcount > 0:
+
+                    tk.messagebox.showinfo(title="Succes", message=f"User: {username} has been added.")
+                    logging.info(f"User: {username}, Last name: {last_name}, First name: {first_name};"
+                                 f" was added in database by '{logged_user}'.")
+                else:
+                    tk.messagebox.showerror(title="Fail", message="User could not be added.")
 
     except pserrors.UniqueViolation:
 
