@@ -1,0 +1,31 @@
+
+28-Sep-2023 18:37:51 - INFO - login_sequence.py - 52 - User necula77 logged in successfully.
+28-Sep-2023 18:40:02 - INFO - DB_actions.py - 53 - User necula77 accesed the data base to modify this car's info: B50SSS, JUNFC452NJF898328.
+28-Sep-2023 18:42:09 - INFO - DB_actions.py - 175 - User necula77 accesed database
+                to modify stock from warehouse for 0102C-13256, now being 13.
+28-Sep-2023 18:42:40 - INFO - DB_actions.py - 141 - User necula77 accesed database to delete part 0102C-13256.
+28-Sep-2023 18:43:09 - INFO - DB_actions.py - 107 - User necula77 accesed database to add volan, 0102C-13256.
+28-Sep-2023 18:46:24 - ERROR - login_sequence.py - 99 - Fields were completed wrongfully.
+28-Sep-2023 18:46:38 - ERROR - login_sequence.py - 99 - Fields were completed wrongfully.
+28-Sep-2023 18:46:39 - ERROR - login_sequence.py - 99 - Fields were completed wrongfully.
+28-Sep-2023 18:46:40 - ERROR - login_sequence.py - 99 - Fields were completed wrongfully.
+28-Sep-2023 18:46:40 - ERROR - login_sequence.py - 99 - Fields were completed wrongfully.
+28-Sep-2023 18:47:09 - INFO - login_sequence.py - 90 - User: vlad, Last name: Manolescu, First name: Vlad; was added in database by 'necula77'.
+28-Sep-2023 18:47:42 - INFO - login_sequence.py - 52 - User vlad logged in successfully.
+28-Sep-2023 18:47:58 - INFO - login_sequence.py - 52 - User necula77 logged in successfully.
+28-Sep-2023 18:48:27 - INFO - login_sequence.py - 52 - User necula77 logged in successfully.
+28-Sep-2023 18:48:38 - INFO - login_sequence.py - 52 - User vlad logged in successfully.
+28-Sep-2023 18:48:57 - INFO - login_sequence.py - 52 - User necula77 logged in successfully.
+28-Sep-2023 18:50:06 - INFO - login_sequence.py - 170 - User: 52, Last name: Manolescu, First name: Andrei, Username: andrei
+                          was edited in database by 'necula77'.
+28-Sep-2023 18:50:29 - ERROR - login_sequence.py - 179 - Fields were completed wrongfully.
+28-Sep-2023 18:51:49 - INFO - login_sequence.py - 123 - User 'andrei' was deleted by 'necula77'.
+28-Sep-2023 18:59:10 - INFO - login_sequence.py - 52 - User necula77 logged in successfully.
+28-Sep-2023 19:01:56 - INFO - login_sequence.py - 52 - User necula77 logged in successfully.
+07-Oct-2023 19:54:39 - INFO - login_sequence.py - 52 - User necula77 logged in successfully.
+07-Oct-2023 19:55:12 - INFO - login_sequence.py - 90 - User: asd, Last name: awd, First name: asd; was added in database by 'necula77'.
+07-Oct-2023 19:56:59 - INFO - login_sequence.py - 52 - User necula77 logged in successfully.
+07-Oct-2023 19:57:10 - INFO - login_sequence.py - 93 - User: awd, Last name: awdx, First name: asd; was added in database by 'necula77'.
+07-Oct-2023 19:57:32 - INFO - login_sequence.py - 52 - User necula77 logged in successfully.
+07-Oct-2023 19:58:09 - INFO - login_sequence.py - 128 - User 'asd' was deleted by 'necula77'.
+07-Oct-2023 19:58:36 - INFO - login_sequence.py - 128 - User 'awd' was deleted by 'necula77'.
